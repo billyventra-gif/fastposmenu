@@ -1,0 +1,55 @@
+{
+  "_comment": "HAND-WRITTEN expected extraction for samples/sample-menu.png. Not model output. Used to test normalize + exporters offline, and as the answer key for scripts/extract-sample.ts.",
+  "restaurant_name": "Riverbend Taqueria",
+  "categories": [
+    {
+      "name": "Tacos",
+      "description": null,
+      "items": [
+        { "name": "Street Tacos (3)", "description": "Corn tortillas, onion, cilantro, salsa verde", "prices": [{ "label": null, "price_text": "$11.50" }], "modifier_groups": ["Pick Your Protein"], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "Baja Fish Tacos (2)", "description": "Beer-battered cod, cabbage slaw, chipotle crema", "prices": [{ "label": null, "price_text": "$13.95" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "Shrimp Tacos (2)", "description": "Ask your server for today's price", "prices": [{ "label": null, "price_text": "MP" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null }
+      ]
+    },
+    {
+      "name": "Burritos & Bowls",
+      "description": null,
+      "items": [
+        { "name": "Classic Burrito", "description": "Rice, beans, cheese, pico, choice of protein", "prices": [{ "label": null, "price_text": "$12.75" }], "modifier_groups": ["Pick Your Protein", "Add-Ons"], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "California Burrito", "description": "Fries, cheese, guacamole, sour cream", "prices": [{ "label": null, "price_text": "$14.25" }], "modifier_groups": ["Pick Your Protein", "Add-Ons"], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "Burrito Bowl", "description": "Cilantro-lime rice, black beans, corn salsa", "prices": [{ "label": null, "price_text": "$13.50" }], "modifier_groups": ["Pick Your Protein", "Add-Ons"], "dietary": ["GF"], "tax_hint": "prepared_food", "confidence": "high", "note": null }
+      ]
+    },
+    {
+      "name": "Sides",
+      "description": null,
+      "items": [
+        { "name": "Chips & Salsa", "description": null, "prices": [{ "label": "Sm", "price_text": "3.50" }, { "label": "Lg", "price_text": "6.00" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "Elote", "description": "Grilled corn, cotija, chile-lime mayo", "prices": [{ "label": null, "price_text": "$5.25" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "Rice & Beans", "description": null, "prices": [{ "label": null, "price_text": "$4.00" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null }
+      ]
+    },
+    {
+      "name": "Drinks",
+      "description": null,
+      "items": [
+        { "name": "Horchata", "description": null, "prices": [{ "label": "16oz", "price_text": "3.75" }, { "label": "24oz", "price_text": "4.95" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "Mexican Coke", "description": null, "prices": [{ "label": null, "price_text": "$3.50" }], "modifier_groups": [], "dietary": [], "tax_hint": "prepared_food", "confidence": "high", "note": null },
+        { "name": "House Margarita", "description": "Rocks or frozen. Must be 21+", "prices": [{ "label": null, "price_text": "$10.00" }], "modifier_groups": ["Margarita Flavors"], "dietary": [], "tax_hint": "alcohol", "confidence": "high", "note": null },
+        { "name": "Modelo Especial", "description": null, "prices": [{ "label": null, "price_text": "$6.50" }], "modifier_groups": [], "dietary": [], "tax_hint": "alcohol", "confidence": "high", "note": null }
+      ]
+    }
+  ],
+  "modifier_groups": [
+    { "name": "Pick Your Protein", "min_select": null, "max_select": null, "rule_text": "choose one", "options": [
+      { "name": "Carne Asada", "price_text": "+2.00" }, { "name": "Al Pastor", "price_text": null }, { "name": "Pollo Asado", "price_text": null }, { "name": "Carnitas", "price_text": null }, { "name": "Grilled Veggies", "price_text": null }
+    ] },
+    { "name": "Add-Ons", "min_select": null, "max_select": null, "rule_text": null, "options": [
+      { "name": "Guacamole", "price_text": "+2.50" }, { "name": "Queso", "price_text": "+1.75" }, { "name": "Extra Meat", "price_text": "+3.00" }, { "name": "Jalapeños", "price_text": "+0.50" }
+    ] },
+    { "name": "Margarita Flavors", "min_select": null, "max_select": null, "rule_text": "pick up to 2", "options": [
+      { "name": "Lime", "price_text": null }, { "name": "Strawberry", "price_text": null }, { "name": "Mango", "price_text": "+1.00" }, { "name": "Spicy Jalapeño", "price_text": "+1.00" }
+    ] }
+  ],
+  "notes": ["18% gratuity added to parties of 8 or more."]
+}
