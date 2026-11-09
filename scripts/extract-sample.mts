@@ -12,6 +12,11 @@ import { Extraction } from "../src/lib/menu/extraction-schema";
 import { normalizeExtractions } from "../src/lib/menu/normalize";
 import { costUsd } from "../src/lib/billing/costs";
 
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error("No ANTHROPIC_API_KEY. Put it in .env.local (cp .env.example .env.local) and run again.");
+  process.exit(1);
+}
+
 const root = new URL("../", import.meta.url);
 const key = Extraction.parse(JSON.parse(readFileSync(new URL("tests/fixtures/sample-extraction.json", root), "utf8")));
 const expected = normalizeExtractions([key], "square", []);
