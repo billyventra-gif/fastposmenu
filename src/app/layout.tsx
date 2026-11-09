@@ -6,7 +6,12 @@ export const metadata: Metadata = {
   description: "Any restaurant menu, into any POS, in minutes.",
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1 };
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#f6f5f1",
+};
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
