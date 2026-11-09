@@ -138,6 +138,15 @@ Measure the real numbers with `npm run test:live`. Every request logs its tokens
 | Claude Sonnet 5.5 ($2/$10) | $0.19 | $0.21 | $0.29–0.32 |
 | Claude Haiku 5.5 ($0.10/$0.50) | $0.01 | $0.01 | $0.02 |
 
+**Measured (2026-11-09, `npm run test:live`, Opus 5.5, medium effort, sample menu: 13 items, 3 modifier groups, sizes, a market price):**
+
+| Input | Items | Prices exact | Modifier groups | Tokens in/out | Cost | Time |
+|---|---|---|---|---|---|---|
+| Photo (PNG) | 13/13 | 13/13 | 3/3 | 4,265 / 2,449 | $0.066 | 21s |
+| PDF | 13/13 | 13/13 | 3/3 (returned 4) | 2,239 / 2,522 (+2,690 cached) | $0.060 | 19s |
+
+Output ran about 190 tokens per item, including thinking and per-call overhead, which is higher than the 70–85 assumed above. Scaled to 150 items that's about **$0.50–0.70 per menu**, the same range as the buffered estimate, so the prices and margins below hold. The cached system prompt worked on the second call. The sample is a clean, typed, one-page menu, so real phone photos will be harder; build the 30-menu test set next.
+
 Output tokens dominate the cost. The system prompt is cached (cache reads $0.20/MTok on Opus 5.5). Batch API (50% off) fits a future "email me when it's done" mode. **Recommendation: keep Opus 5.5 as the default and decide with data.** Run the same 30-menu test set on Sonnet 5.5 and Haiku 5.5. If one matches accuracy, set `MENU_MODEL` per plan. Accuracy is the product; the model is under 2% of price either way.
 
 **Other per-menu costs:**
