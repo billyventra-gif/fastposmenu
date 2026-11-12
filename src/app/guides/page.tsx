@@ -16,7 +16,7 @@ export default function GuidesPage() {
     <MarketingShell>
       <Container>
         <section className="animate-rise py-10 sm:py-14">
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Menu import guides</h1>
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">Menu import guides</h1>
           <p className="mt-3 max-w-xl text-lg text-muted">
             How menus actually get into Square, Clover and Toast, and how to move one between them. Written for agents, installers and owners.
           </p>
@@ -26,10 +26,10 @@ export default function GuidesPage() {
             <li key={g.slug} className="animate-rise" style={{ animationDelay: `${i * 60}ms` }}>
               <Link
                 href={`/guides/${g.slug}`}
-                className="group flex h-full flex-col rounded-3xl bg-surface p-6 ring-1 ring-line transition hover:ring-ink/20"
+                className="group flex h-full flex-col rounded-xl bg-surface p-6 border border-line transition hover:ring-ink/20"
               >
-                <span className="text-xs font-bold uppercase tracking-wide text-brand-ink">{g.tag}</span>
-                <h2 className="mt-2 text-xl font-bold leading-snug">{g.title}</h2>
+                <span className="text-xs font-semibold uppercase tracking-wide text-brand-ink">{g.tag}</span>
+                <h2 className="mt-2 text-xl font-semibold leading-snug">{g.title}</h2>
                 <p className="mt-2 flex-1 leading-relaxed text-muted">{g.description}</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">
                   Read · {g.readMins} min <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />

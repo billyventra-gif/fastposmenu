@@ -16,7 +16,7 @@ export default function CloverPage() {
       name="Clover"
       h1={
         <>
-          Build the Clover menu <span className="text-brand">from the one they already have.</span>
+          Build the Clover menu <span className="font-serif font-normal italic tracking-[-0.01em]">from the one they already have.</span>
         </>
       }
       sub="Photos, a PDF or the old POS's export in. A Clover inventory workbook out, with items, categories, modifier groups and tax rates filled in."

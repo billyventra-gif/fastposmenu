@@ -98,7 +98,7 @@ export default function Uploader({
         <PosMark pos={target} className="size-5 rounded-md text-[10px]" />
         {POS_INFO[target].label}
       </button>
-      <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Add the menu</h1>
+      <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Add the menu</h1>
       <p className="mt-2 text-muted">Photos of each page, a PDF, a spreadsheet, or an export from the old POS.</p>
 
       {/* Phones: big camera + files buttons. Tablet/desktop: drop zone. */}
@@ -248,7 +248,7 @@ function Reading({ files, previews }: { files: File[]; previews: (string | null)
         </div>
       </div>
 
-      <h2 className="mt-6 text-2xl font-bold sm:mt-8">Reading your menu</h2>
+      <h2 className="mt-6 text-2xl font-semibold sm:mt-8">Reading your menu</h2>
       <p className="mt-1 text-sm text-muted">
         {files.length} file{files.length > 1 ? "s" : ""} · {t}s · usually under a minute
       </p>

@@ -8,6 +8,7 @@ import { POS_INFO } from "@/lib/export/registry";
 import Uploader from "./Uploader";
 import Review from "./Review";
 import { PosMark, cx } from "./ui";
+import { Mark } from "./brand";
 
 const DRAFT_KEY = "fpm:draft:v1";
 const META_KEY = "fpm:draft-meta:v1"; // { draftId, paidSessionId? }
@@ -90,20 +91,20 @@ export default function Builder() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-30 border-b border-line/70 bg-bg/85 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-line bg-bg/85 backdrop-blur-xl">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
-            <span className="grid size-7 place-items-center rounded-lg bg-brand text-sm text-white">F</span>
-            <span className="hidden sm:inline">Fast POS Menu</span>
+          <Link href="/" className="flex items-center gap-2" aria-label="Fast POS Menu home">
+            <Mark className="size-7" />
+            <span className="hidden font-display text-[16px] font-semibold tracking-[-0.02em] sm:inline">Fast POS Menu</span>
           </Link>
           <ol className="flex items-center gap-1.5 text-xs font-medium sm:gap-2 sm:text-sm">
             {STEPS.map((s, i) => (
               <li key={s.id} className="flex items-center gap-1.5 sm:gap-2">
                 <span
                   className={cx(
-                    "grid size-6 place-items-center rounded-full text-[11px] font-bold transition",
-                    i < at && "bg-ink text-white",
-                    i === at && "bg-brand text-white",
+                    "grid size-6 place-items-center rounded-full text-[11px] font-semibold transition",
+                    i < at && "bg-emerald-600 text-white",
+                    i === at && "bg-ink text-white",
                     i > at && "bg-line text-muted",
                   )}
                 >
@@ -128,7 +129,7 @@ export default function Builder() {
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-36 pt-6 sm:px-6 sm:pt-10">
         {step === "pos" && (
           <section className="mx-auto max-w-3xl animate-rise">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Where&apos;s this menu going?</h1>
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Where&apos;s this menu going?</h1>
             <p className="mt-2 text-muted">Pick the POS. You can switch later.</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {POS_TARGETS.map((p, i) => (
@@ -141,13 +142,13 @@ export default function Builder() {
                     setStep(menu?.items.length ? "review" : "upload");
                   }}
                   className={cx(
-                    "group flex animate-rise items-center gap-4 rounded-3xl bg-surface p-4 text-left ring-1 transition hover:-translate-y-0.5 hover:shadow-lg sm:flex-col sm:items-start sm:p-5",
-                    target === p ? "ring-2 ring-brand" : "ring-line",
+                    "group flex animate-rise items-center gap-4 rounded-xl border bg-surface p-4 text-left transition hover:border-ink/30 sm:flex-col sm:items-start sm:p-5",
+                    target === p ? "border-ink ring-1 ring-ink" : "border-line",
                   )}
                 >
                   <PosMark pos={p} className="size-14 shrink-0 text-2xl" />
                   <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-2 text-lg font-bold">
+                    <span className="flex items-center gap-2 text-lg font-semibold">
                       {POS_INFO[p].label}
                       <ArrowRight className="size-4 text-muted transition group-hover:translate-x-1 group-hover:text-brand sm:hidden" />
                     </span>
