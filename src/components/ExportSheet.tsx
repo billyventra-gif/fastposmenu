@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, CheckCircle2, Download, FileJson, FileSpreadsheet, Info, Loader2 } from "lucide-react";
+import { AlertTriangle, Check, CheckCircle2, Download, FileJson, FileSpreadsheet, Info, Loader2, Lock, Tag } from "lucide-react";
 import type { Menu } from "@/lib/menu/schema";
 import type { Issue } from "@/lib/menu/normalize";
 import { POS_INFO } from "@/lib/export/registry";
+import { PER_MENU, fmtUsd } from "@/lib/billing/plans";
 import { Button, Sheet, cx } from "./ui";
 
 type ExportFile = { filename: string; mime: string; base64: string };
-type ExportResponse = { issues: Issue[]; steps: string[]; files: ExportFile[]; error?: string };
+type ExportResponse = { issues: Issue[]; steps: string[]; files: ExportFile[]; error?: string; needsPayment?: boolean };
 
 function download(f: ExportFile) {
   const bytes = Uint8Array.from(atob(f.base64), (c) => c.charCodeAt(0));
@@ -20,8 +21,22 @@ function download(f: ExportFile) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export default function ExportSheet({ open, menu, onClose }: { open: boolean; menu: Menu; onClose: () => void }) {
+export default function ExportSheet({
+  open,
+  menu,
+  draftId,
+  paidSessionId,
+  onClose,
+}: {
+  open: boolean;
+  menu: Menu;
+  draftId: string;
+  paidSessionId?: string;
+  onClose: () => void;
+}) {
   const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
   const [res, setRes] = useState<ExportResponse | null>(null);
   const info = POS_INFO[menu.target];
 
@@ -31,9 +46,9 @@ export default function ExportSheet({ open, menu, onClose }: { open: boolean; me
     // eslint-disable-next-line react-hooks/set-state-in-effect -- kick off export when the sheet opens
     setBusy(true);
     setRes(null);
-    fetch("/api/export", { method: "POST", body: JSON.stringify({ menu }) })
+    fetch("/api/export", { method: "POST", body: JSON.stringify({ menu, draftId, paidSessionId }) })
       .then((r) => r.json())
-      .then((d) => !cancelled && setRes(d))
+      .then((d) => !cancelled && setRes({ issues: [], steps: [], files: [], ...d }))
       .catch(() => !cancelled && setRes({ issues: [], steps: [], files: [], error: "Couldn't build the file. Try again." }))
       .finally(() => !cancelled && setBusy(false));
     return () => {
@@ -42,6 +57,23 @@ export default function ExportSheet({ open, menu, onClose }: { open: boolean; me
     // Rebuild only when the sheet opens; edits happen with the sheet closed.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  const checkout = async () => {
+    setPaying(true);
+    setPayError(null);
+    try {
+      const r = await fetch("/api/checkout", {
+        method: "POST",
+        body: JSON.stringify({ draftId, target: menu.target, restaurantName: menu.restaurantName, itemCount: menu.items.length }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.url) throw new Error(d.error || "Couldn't start checkout.");
+      window.location.href = d.url;
+    } catch (e) {
+      setPayError(e instanceof Error ? e.message : "Couldn't start checkout.");
+      setPaying(false);
+    }
+  };
 
   const errors = res?.issues.filter((i) => i.level === "error") ?? [];
   const warns = res?.issues.filter((i) => i.level === "warn") ?? [];
@@ -57,7 +89,39 @@ export default function ExportSheet({ open, menu, onClose }: { open: boolean; me
         </div>
       )}
 
-      {!busy && res?.error && <p className="rounded-2xl bg-red-50 p-4 text-sm text-red-700">{res.error}</p>}
+      {!busy && res?.needsPayment && (
+        <div className="animate-rise space-y-5">
+          <div className="rounded-3xl bg-ink p-5 text-white">
+            <div className="flex items-center gap-2 text-sm text-white/70">
+              <Lock className="size-4" /> Your file is ready to unlock
+            </div>
+            <div className="mt-2 flex items-end gap-2">
+              <span className="text-4xl font-extrabold">{fmtUsd(PER_MENU.priceCents)}</span>
+              <span className="pb-1 text-white/70">this menu</span>
+            </div>
+            <p className="mt-1 text-sm text-white/70">
+              {menu.items.length} items → {info.label}. One-time. Re-download anytime.
+            </p>
+          </div>
+          <ul className="space-y-2 text-sm">
+            {PER_MENU.features.map((f) => (
+              <li key={f} className="flex items-center gap-2">
+                <Check className="size-4 text-emerald-600" /> {f}
+              </li>
+            ))}
+          </ul>
+          {payError && <p className="rounded-2xl bg-red-50 p-3 text-sm text-red-700">{payError}</p>}
+          <Button size="lg" className="w-full" onClick={checkout} disabled={paying}>
+            {paying ? <Loader2 className="size-5 animate-spin" /> : null}
+            Pay {fmtUsd(PER_MENU.priceCents)} and download
+          </Button>
+          <p className="flex items-center justify-center gap-1.5 text-xs text-muted">
+            <Tag className="size-3.5" /> Have a promo code? Enter it on the next screen. Secure checkout by Stripe.
+          </p>
+        </div>
+      )}
+
+      {!busy && res?.error && !res.needsPayment && <p className="rounded-2xl bg-red-50 p-4 text-sm text-red-700">{res.error}</p>}
 
       {!busy && errors.length > 0 && (
         <div className="rounded-2xl bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-200">

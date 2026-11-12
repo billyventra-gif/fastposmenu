@@ -1,4 +1,6 @@
-import { canExport, recordExport } from "@/lib/billing/entitlements";
+import { canExport } from "@/lib/billing/entitlements";
+import { billingEnabled } from "@/lib/billing/stripe";
+import { PER_MENU } from "@/lib/billing/plans";
 import { exportMenu } from "@/lib/export";
 import { Menu } from "@/lib/menu/schema";
 
@@ -10,14 +12,21 @@ export async function POST(req: Request) {
     return Response.json({ error: "Menu has problems.", issues: parsed.error.issues.slice(0, 10) }, { status: 400 });
   }
   const menu = parsed.data;
-  const menuId = typeof body?.menuId === "string" ? body.menuId : "draft";
 
-  // Billing hook: always allowed until Stripe is wired. Charge on download, not on preview.
-  const ent = await canExport(null, menuId);
-  if (!ent.allowed) return Response.json({ error: ent.reason, upgradeUrl: ent.upgradeUrl }, { status: 402 });
+  // Pay per menu: charge on download, not on preview.
+  const ent = await canExport(body?.draftId, body?.paidSessionId);
+  if (!ent.allowed) {
+    const needsPayment = ent.reason === "payment_required";
+    return Response.json(
+      { error: needsPayment ? "Payment needed to download." : ent.reason, needsPayment, priceCents: PER_MENU.priceCents },
+      { status: 402 },
+    );
+  }
 
   const result = await exportMenu(menu);
-  if (result.files.length) await recordExport(null, menuId, menu.target);
+  if (result.files.length && billingEnabled()) {
+    console.log("[export] paid", { draftId: body?.draftId, session: ent.paidSessionId, target: menu.target, items: menu.items.length });
+  }
   return Response.json({
     issues: result.issues,
     steps: result.steps,

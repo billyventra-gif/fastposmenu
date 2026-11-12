@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   ArrowDown,
@@ -35,7 +35,23 @@ export function ruleLabel(g: Pick<ModifierGroup, "minSelect" | "maxSelect">) {
   return `Pick ${lo}–${hi}`;
 }
 
-export default function Review({ menu, onChange, onChangePos }: { menu: Menu; onChange: (m: Menu) => void; onChangePos: () => void }) {
+export default function Review({
+  menu,
+  onChange,
+  onChangePos,
+  draftId,
+  paidSessionId,
+  openExport,
+  onExportOpened,
+}: {
+  menu: Menu;
+  onChange: (m: Menu) => void;
+  onChangePos: () => void;
+  draftId: string;
+  paidSessionId?: string;
+  openExport?: boolean;
+  onExportOpened?: () => void;
+}) {
   const [tab, setTab] = useState<Tab>("items");
   const [query, setQuery] = useState("");
   const [onlyFlagged, setOnlyFlagged] = useState(false);
@@ -43,6 +59,13 @@ export default function Review({ menu, onChange, onChangePos }: { menu: Menu; on
   const [groupId, setGroupId] = useState<string | null>(null);
   const [catId, setCatId] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
+  // Returning from Stripe: open the export sheet once.
+  useEffect(() => {
+    if (!openExport) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot open after checkout redirect
+    setExporting(true);
+    onExportOpened?.();
+  }, [openExport, onExportOpened]);
 
   const cats = useMemo(() => [...menu.categories].sort((a, b) => a.sortOrder - b.sortOrder), [menu.categories]);
   const flagged = menu.items.filter((i) => i.confidence === "low");
@@ -297,7 +320,7 @@ export default function Review({ menu, onChange, onChangePos }: { menu: Menu; on
       />
       <GroupSheet key={group?.id} group={group} menu={menu} onChange={onChange} onClose={() => setGroupId(null)} />
       <CategorySheet cat={cat} cats={cats} menu={menu} onChange={onChange} onClose={() => setCatId(null)} />
-      <ExportSheet open={exporting} menu={menu} onClose={() => setExporting(false)} />
+      <ExportSheet open={exporting} menu={menu} draftId={draftId} paidSessionId={paidSessionId} onClose={() => setExporting(false)} />
     </section>
   );
 }

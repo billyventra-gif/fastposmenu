@@ -24,9 +24,14 @@ export default function Home() {
           <span className="grid size-8 place-items-center rounded-lg bg-brand text-white">F</span>
           Fast POS Menu
         </span>
-        <Link href="/build" className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink/85">
-          Open app
-        </Link>
+        <nav className="flex items-center gap-1 sm:gap-2">
+          <Link href="/pricing" className="rounded-full px-3 py-2 text-sm font-semibold hover:bg-ink/5">
+            Pricing
+          </Link>
+          <Link href="/build" className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink/85">
+            Open app
+          </Link>
+        </nav>
       </header>
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-5 sm:px-8">
@@ -50,7 +55,10 @@ export default function Home() {
               >
                 Build a menu <ArrowRight className="size-5" />
               </Link>
-              <span className="inline-flex h-14 items-center justify-center gap-3 text-sm text-muted">
+              <Link href="/pricing" className="inline-flex h-14 items-center justify-center rounded-2xl px-5 font-semibold ring-1 ring-line hover:bg-surface">
+                $49 a menu · See pricing
+              </Link>
+              <span className="hidden h-14 items-center justify-center gap-3 text-sm text-muted lg:inline-flex">
                 <span className="font-semibold text-ink">Square</span>·<span className="font-semibold text-ink">Clover</span>·
                 <span className="font-semibold text-ink">Toast</span>
               </span>

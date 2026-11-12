@@ -10,6 +10,19 @@ import Review from "./Review";
 import { PosMark, cx } from "./ui";
 
 const DRAFT_KEY = "fpm:draft:v1";
+const META_KEY = "fpm:draft-meta:v1"; // { draftId, paidSessionId? }
+
+type DraftMeta = { draftId: string; paidSessionId?: string };
+const newDraftId = () => `d_${crypto.randomUUID().replace(/-/g, "")}`;
+function loadMeta(): DraftMeta {
+  try {
+    const m = JSON.parse(localStorage.getItem(META_KEY) ?? "null");
+    if (m && typeof m.draftId === "string") return m;
+  } catch {
+    /* fall through */
+  }
+  return { draftId: newDraftId() };
+}
 type Step = "pos" | "upload" | "review";
 const STEPS: { id: Step; label: string }[] = [
   { id: "pos", label: "Pick POS" },
@@ -22,6 +35,9 @@ export default function Builder() {
   const [menu, setMenu] = useState<Menu | null>(null);
   const [step, setStep] = useState<Step>("pos");
   const [loaded, setLoaded] = useState(false);
+  const [meta, setMeta] = useState<DraftMeta | null>(null);
+  const [openExport, setOpenExport] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   // Restore a draft saved on this device.
   useEffect(() => {
@@ -40,6 +56,19 @@ export default function Builder() {
     } catch {
       /* ignore bad drafts */
     }
+    // Back from Stripe Checkout?
+    const m = loadMeta();
+    const params = new URLSearchParams(window.location.search);
+    const paid = params.get("paid");
+    if (paid?.startsWith("cs_")) {
+      m.paidSessionId = paid;
+      setOpenExport(true);
+    } else if (params.get("canceled")) {
+      setNotice("Checkout canceled. Your menu is still here.");
+    }
+    if (paid || params.get("canceled")) window.history.replaceState(null, "", "/build");
+    localStorage.setItem(META_KEY, JSON.stringify(m));
+    setMeta(m);
     setLoaded(true);
   }, []);
 
@@ -50,6 +79,9 @@ export default function Builder() {
   const startOver = () => {
     if (menu?.items.length && !confirm("Start over? This clears the current menu.")) return;
     localStorage.removeItem(DRAFT_KEY);
+    const m = { draftId: newDraftId() };
+    localStorage.setItem(META_KEY, JSON.stringify(m));
+    setMeta(m);
     setMenu(null);
     setStep("pos");
   };
@@ -143,7 +175,25 @@ export default function Builder() {
           />
         )}
 
-        {step === "review" && menu && <Review menu={menu} onChange={setMenu} onChangePos={() => setStep("pos")} />}
+        {notice && (
+          <div className="mx-auto mb-4 flex max-w-3xl items-center justify-between gap-3 rounded-2xl bg-surface px-4 py-3 text-sm ring-1 ring-line">
+            {notice}
+            <button onClick={() => setNotice(null)} className="text-muted underline">
+              OK
+            </button>
+          </div>
+        )}
+        {step === "review" && menu && meta && (
+          <Review
+            menu={menu}
+            onChange={setMenu}
+            onChangePos={() => setStep("pos")}
+            draftId={meta.draftId}
+            paidSessionId={meta.paidSessionId}
+            openExport={openExport}
+            onExportOpened={() => setOpenExport(false)}
+          />
+        )}
       </main>
     </div>
   );

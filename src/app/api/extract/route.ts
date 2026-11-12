@@ -27,8 +27,8 @@ export async function POST(req: Request) {
   if (files.length === 0) return Response.json({ error: "Add at least one file." }, { status: 400 });
 
   // Billing hook: always allowed until Stripe is wired.
-  const ent = await canExtract(null);
-  if (!ent.allowed) return Response.json({ error: ent.reason, upgradeUrl: ent.upgradeUrl }, { status: 402 });
+  const ent = await canExtract();
+  if (!ent.allowed) return Response.json({ error: ent.reason }, { status: 402 });
 
   const jobs: ExtractInput[] = [];
   const direct: Extraction[] = [];

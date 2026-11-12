@@ -1,41 +1,35 @@
+import "server-only";
+import { billingEnabled, DRAFT_ID, stripe } from "./stripe";
+
 /**
- * Billing hook. No payments yet: everything is allowed.
+ * Pay-per-menu, no database:
+ *  - Each menu draft has a random draftId (made in the browser).
+ *  - Checkout puts the draftId in the Stripe session metadata.
+ *  - On export we ask Stripe: is this session paid, and is it for this draftId?
+ * A paid draft can be re-exported as often as needed.
  *
- * Plan for Stripe (see docs/research.md §5 for the price points):
- *  - Per-menu build: Stripe Checkout (mode: "payment") for one build credit.
- *    Webhook `checkout.session.completed` -> insert row into `build_credits`.
- *  - Subscription: Stripe Checkout (mode: "subscription") for a monthly plan with N builds.
- *    Webhooks `customer.subscription.*` -> upsert `subscriptions`.
- *  - Spend a credit when the user DOWNLOADS an export (not on extract), so they can
- *    preview the result before paying. Extraction is rate-limited instead.
- *
- * Wire-up points:
- *  - src/app/api/extract/route.ts  -> canExtract()
- *  - src/app/api/export/route.ts   -> canExport() then recordExport()
- *  - add src/app/api/stripe/webhook/route.ts
+ * Pro subscriptions (monthly build credits) need accounts + a database. Not wired yet.
  */
 
-export type Plan = "free" | "per_menu" | "pro" | "agency";
+export type Entitlement = { allowed: true; paidSessionId?: string } | { allowed: false; reason: string };
 
-export const PLANS = {
-  per_menu: { priceUsd: 49, builds: 1 },
-  pro: { priceUsd: 149, buildsPerMonth: 10 },
-  agency: { priceUsd: 399, buildsPerMonth: 40 },
-} as const;
-
-export type Entitlement = { allowed: true } | { allowed: false; reason: string; upgradeUrl: string };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function canExtract(userId: string | null): Promise<Entitlement> {
+// Extraction is free while billing is off; when it's on, the beta password gate + Stripe
+// on export are the controls. Add per-IP rate limiting before opening extraction publicly.
+export async function canExtract(): Promise<Entitlement> {
   return { allowed: true };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function canExport(userId: string | null, menuId: string): Promise<Entitlement> {
-  return { allowed: true };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function recordExport(userId: string | null, menuId: string, target: string): Promise<void> {
-  // no-op until Stripe + Supabase are wired
+export async function canExport(draftId: unknown, paidSessionId: unknown): Promise<Entitlement> {
+  if (!billingEnabled()) return { allowed: true };
+  if (typeof draftId !== "string" || !DRAFT_ID.test(draftId)) return { allowed: false, reason: "Missing menu ID. Refresh and try again." };
+  if (typeof paidSessionId !== "string" || !paidSessionId.startsWith("cs_")) return { allowed: false, reason: "payment_required" };
+  try {
+    const s = await stripe().checkout.sessions.retrieve(paidSessionId);
+    if (s.payment_status !== "paid" && s.payment_status !== "no_payment_required") return { allowed: false, reason: "payment_required" };
+    if (s.metadata?.draftId !== draftId) return { allowed: false, reason: "payment_required" };
+    return { allowed: true, paidSessionId };
+  } catch (e) {
+    console.error("[billing] session lookup failed", e);
+    return { allowed: false, reason: "Couldn't confirm payment. Try again in a minute." };
+  }
 }
