@@ -10,7 +10,7 @@ export const SITE = {
   supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "hello@fastposmenu.com",
   tagline: "Any restaurant menu, into any POS, in minutes.",
   description:
-    "Turn any restaurant menu (photos, PDF, spreadsheet or old-POS export) into an import file for Square, Clover or Toast. Built for ISOs, agents and resellers who board restaurants.",
+    "Turn menu photos, PDFs or old-POS exports into a Square, Clover or Toast import file in minutes. Built for ISOs, agents and POS resellers. $49 a menu.",
 } as const;
 
 /** Public pages for the sitemap. Marketing pages added later should be listed here too. */
