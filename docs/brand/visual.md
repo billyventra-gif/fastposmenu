@@ -57,7 +57,7 @@ Don't use `font-bold`/`font-extrabold` on marketing pages. Semibold is the heavi
 - **Before/after** stays the core story: paper menu → structured rows → import file.
 - **Sample menus only** (`docs/marketing/sample-menus.md`). Never a real merchant's menu.
 - Photos: real counters, real printed menus, natural light, shot on a phone. No stock handshakes, robots or glowing brains. No illustrations.
-- POS names appear as plain text or neutral monograms (`PosMark`). Never vendor logos or vendor brand colors used as a logo.
+- POS names appear as plain text on marketing pages. In the app, `PosMark` letter badges are all neutral black (no per-vendor colors). Never vendor logos or vendor brand colors used as a logo.
 
 ## Social and ad templates
 
