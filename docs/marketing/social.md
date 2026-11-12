@@ -226,6 +226,73 @@ Target groups (Billy to join and check rules first): merchant services agent gro
 
 ---
 
+## Weeks 3–4, first drafts (revise with week 1–2 data by Nov 27)
+
+Anything in [brackets] gets filled with real numbers. If a number isn't real yet, the post doesn't run.
+
+**Tue Dec 1 · Toast → Square** (link: /guides/toast-to-square-menu)
+> Moving a restaurant from Toast to Square? Here's the part nobody tells the owner: Toast often does sizes as a modifier group. Square wants them as variations.
+>
+> Copy them over as modifiers and the reporting is wrong for the life of the account.
+>
+> Wrote up the whole switch, start to finish. Guide in the comments.
+
+**Wed Dec 2 · Carousel: one menu, three POS** (6 slides)
+1. "Same latte. Three POS systems. Three different ways to build it."
+2. Square: "Sizes are variations. Milk is a modifier set you create first; the import can only switch it on."
+3. Clover: "Sizes are a required Size modifier group. Groups link by exact name."
+4. Toast: "Sizes are a group priced by modifier. The bulk tool needs your menu group IDs."
+5. "This is why menu builds take hours. Every POS models a menu differently."
+6. "Snap it once, pick the POS, download the file. → link in comments"
+
+**Thu Dec 3 · Signed but not processing**
+> The most expensive merchant in your book is the one who signed and hasn't run a card.
+>
+> No residuals. Full attention. And every day they're not live, someone else is calling them.
+>
+> What's the #1 reason your restaurant installs slip? My guess is the menu. Tell me I'm wrong.
+
+**Fri Dec 4 · Poll**
+> How long does a restaurant menu build take your team, start to finish?
+> ○ Under 2 hours ○ 2–5 hours ○ 5–10 hours ○ More than a day
+
+**Mon Dec 7 · Poll results**
+> [N] people answered. [X]% said more than 5 hours. [Fill: one surprising comment, quoted with permission.] At even 5 hours, an ISO boarding 20 restaurants a month is spending 100 hours on menus.
+
+**Tue Dec 8 · Clover guide**
+> Clover's menu import is better than most people think. One workbook creates items, modifier groups, categories and taxes.
+>
+> The catch: you have to build the workbook. Multi-group items go on continuation rows, names must match exactly, sizes go in a required Size group.
+>
+> Full sheet-by-sheet guide in the comments. Or skip it and have the workbook built for you.
+
+**Wed Dec 9 · Installer POV**
+> If you're a POS reseller, menu programming is probably your biggest unquoted labor line.
+>
+> You quote the install flat, then the menu takes 3 hours or 12 and eats the margin.
+>
+> Start every install from a finished draft in the right import format and the variance mostly goes away. Quote the install, not the hours.
+
+**Thu Dec 10 · Feature drop**: write when the build session ships something (Pro, a new POS, own-site link import). Don't pre-announce.
+
+**Fri Dec 11 · Lessons from 3 weeks**
+> Three weeks of Fast POS Menu. Real numbers:
+> - [N] menus built, [N] paid
+> - POS split: Clover [x]%, Square [x]%, Toast [x]%
+> - Most common fix in review: [x]
+> - Average time from upload to download: [x] min
+>
+> What surprised me: [one honest lesson].
+
+**Mon Dec 14 · Customer story**: only with a real customer's written permission. Format: who (role, not name if they prefer), POS, menu size, time it took, what they'd tell another agent. Otherwise swap in a "hardest menu" result from the Nov 30 challenge.
+
+**Tue Dec 15 · Month 1 + what's next**
+> Month one done. Next on the list: [SkyTab / Heartland / SpotOn, whichever has the most requests]. If you board on one of those, reply and I'll put you on the early list.
+
+Short video for weeks 3–4: Toast → Square (V7), sizes in three POS side by side (V8), Clover workbook walkthrough (V9), a hard-menu result (V10), month recap (V11). Same production rules as V1–V6, using `sample-menus.md`.
+
+---
+
 ## Approval (what I need from Billy)
 
 1. Approve posting from your personal LinkedIn (L1–L10), or tell me which to cut.
