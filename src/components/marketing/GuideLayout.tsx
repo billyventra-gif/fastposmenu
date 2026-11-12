@@ -15,7 +15,7 @@ const PROSE = [
   "[&_p]:mt-4 [&_ul]:mt-4 [&_ol]:mt-4",
   "[&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6",
   "[&_li]:pl-1 [&_strong]:font-semibold [&_strong]:text-ink",
-  "[&_a]:font-semibold [&_a]:text-brand-ink [&_a]:underline [&_a]:decoration-brand/30 [&_a]:underline-offset-4 hover:[&_a]:decoration-brand",
+  "[&_a]:font-medium [&_a]:text-ink [&_a]:underline [&_a]:decoration-line [&_a]:underline-offset-4 hover:[&_a]:decoration-ink",
   "[&_code]:rounded [&_code]:bg-ink/5 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[15px]",
   "[&_table]:mt-5 [&_table]:w-full [&_table]:text-left [&_table]:text-[15px] [&_th]:border-b [&_th]:border-line [&_th]:py-2 [&_th]:pr-4 [&_th]:font-semibold",
   "[&_td]:border-b [&_td]:border-line [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top",
@@ -73,7 +73,7 @@ export function GuideLayout({
           </p>
 
           <aside className="mt-8 rounded-xl bg-brand-soft p-5 sm:p-6">
-            <p className="text-sm font-semibold uppercase tracking-wide text-brand-ink">Short version</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Short version</p>
             <div className="mt-2 leading-relaxed [&_li]:mt-1.5 [&_ul]:list-disc [&_ul]:pl-5">{tldr}</div>
           </aside>
 
@@ -95,7 +95,7 @@ export function GuideLayout({
           {related.map((g) => (
             <li key={g.slug}>
               <Link href={`/guides/${g.slug}`} className="block h-full rounded-xl bg-surface p-5 border border-line transition hover:ring-ink/20">
-                <span className="text-xs font-semibold uppercase tracking-wide text-brand-ink">{g.tag}</span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">{g.tag}</span>
                 <span className="mt-2 block font-semibold leading-snug">{g.short}</span>
               </Link>
             </li>

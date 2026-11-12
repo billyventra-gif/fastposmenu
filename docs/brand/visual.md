@@ -1,80 +1,81 @@
-# Visual system
+# Visual system (v2)
 
-Matches the tokens already in `src/app/globals.css`. Don't introduce new colors on the site without adding a token there first.
+Matches design system v2 on main (2026-11-12): tokens in `src/app/globals.css`, fonts in `src/app/fonts.ts`, logo in `src/components/brand.tsx`, primitives in `src/components/marketing/site.tsx`. If this doc and the code disagree, the code wins and this doc gets fixed.
+
+**The look in one line:** editorial fintech. White canvas, near-black type, hairline borders, small radii, one serif-italic phrase per headline, and orange used like a highlighter, not a paint roller.
 
 ## Color
 
 | Token | Hex | Use |
 |---|---|---|
-| `--brand` | `#ff5a1f` | Primary actions, the one emphasized word in a headline, logo tile. Max ~10% of any screen. |
-| `--brand-ink` | `#d43f0a` | Brand on hover; brand-colored text on light backgrounds (passes AA on `--brand-soft`). |
-| `--brand-soft` | `#fff1ea` | Pills, icon tiles, highlight bands. |
-| `--ink` | `#15171b` | Text, secondary buttons (dark pill), dark feature panels (Pro card). |
-| `--muted` | `#6b6e75` | Body copy under headlines, captions. |
-| `--bg` | `#f6f5f1` | Page background (warm off-white). Never pure white for the page. |
-| `--surface` | `#ffffff` | Cards. Always with `ring-1 ring-line`. |
-| `--line` | `#e6e3dc` | Hairlines, card rings, dividers. |
-| Status green | Tailwind `emerald-100/600/800` | "READY", checkmarks. |
-| Status amber | Tailwind `amber-100/900` | "Flagged / needs review." |
+| `--bg` | `#fbfbfa` | Page canvas. |
+| `--surface` | `#ffffff` | Cards, panels, inputs. Always with a hairline `border-line`. |
+| `--ink` | `#0e0f11` | Text, primary buttons, dark panels (CTA band, "us" row in comparisons). |
+| `--muted` | `#62646b` | Supporting copy, captions, mono labels. |
+| `--line` | `#e7e6e3` | Hairline borders and dividers. |
+| `--brand` | `#ff5a1f` | **Accent only:** the dot in the logo mark, the tick before an eyebrow, step numbers, the dot in a pill. |
+| `--brand-ink` | `#d6430c` | Rare: orange text that has to pass contrast (e.g. step numbers on a tint). |
+| `--brand-soft` | `#f3f2ef` | Despite the name, a **neutral** tint for icon tiles and the guide summary box. |
+| Status green | Tailwind `emerald-*` | "READY", checkmarks. |
+| Status amber | Tailwind `amber-*` | Flagged / needs review, inside the app. |
 
-**Contrast:** white text on `#ff5a1f` is ~3:1. OK for large/bold button text (≥17px semibold, as used), not for small body text. For small orange text use `--brand-ink`.
-
-**POS color tiles:** the app uses neutral monogram tiles (`PosMark`: S on ink, C on emerald, T on orange). These are *our* markers, not vendor logos. Keep them monogram-only; never recreate a vendor's logo shape.
+**Orange rules.** Never orange headlines, orange buttons, orange body text or links, orange backgrounds, gradients, glows or blur blobs. If you're reaching for orange to make something stand out, use weight, size, the serif accent or a dark panel instead.
 
 ## Type
 
-- System sans stack (`--font-sans`: SF Pro / Segoe / Inter / Roboto). No web fonts: fast on phones, zero layout shift.
-- Headlines: `font-extrabold tracking-tight`, tight leading (1.05). Mobile H1 42px, desktop 60px.
-- Section heads: `text-2xl/3xl font-extrabold tracking-tight`.
-- Body: 16–18px, `text-muted` for supporting copy, `leading-relaxed` in long-form.
-- Numbers: `tabular-nums` for prices and stats.
-- One brand-orange phrase per headline, max. ("Any menu. Any POS. **In minutes.**")
+| Role | Font | Style |
+|---|---|---|
+| Headings | **Inter Tight** (`font-display`) | Semibold, tight tracking (about -0.02em), tight leading. Mobile H1 ≈ 40px, desktop ≈ 60px. |
+| Accent phrase | **Instrument Serif**, italic (`font-serif`) | **One phrase per headline, max**, usually the payoff: "Board the restaurant. *Skip the menu build.*" Same color as the headline. |
+| Body | **Inter** (`font-sans`) | 16–18px, `text-muted` for supporting copy. |
+| Labels | **IBM Plex Mono** (`font-mono`) | Eyebrows, labels, file names, prices in demos: uppercase, 11px, wide tracking (0.12–0.14em), `text-muted`. |
 
-## Shape and layout
+Don't use `font-bold`/`font-extrabold` on marketing pages. Semibold is the heaviest weight.
 
-- Radius: buttons `rounded-2xl`, cards `rounded-3xl`, pills `rounded-full`. Big and soft.
-- Primary button: `h-14 rounded-2xl bg-brand text-white` with the orange glow shadow `shadow-[0_10px_30px_-10px_rgba(255,90,31,0.7)]`.
-- Secondary: `ring-1 ring-line` on transparent; dark pill `bg-ink text-white` for "Open app".
-- Containers: `max-w-6xl px-5 sm:px-8`. Long-form articles `max-w-2xl`.
-- Mobile-first: single column, full-width CTAs on phones, stacked buttons (`flex-col sm:flex-row`).
-- Motion: `animate-rise` on entry with small stagger (80ms). The menu "scan" line is our signature motion. Respect reduced-motion (already global).
+## Shape and components
 
-## Logo / wordmark direction
+- **Radii 8–12px** (Tailwind `rounded-lg`/`xl`/`2xl` are remapped to 8/10/12px). Pills stay `rounded-full`.
+- **Borders, not shadows.** `border border-line` on cards. Product shots and the demo card can carry one soft shadow.
+- **Primary button:** black, `rounded-lg h-12`, white text, small arrow. **Secondary:** white with `border-line`. Use `PrimaryCta` / `SecondaryCta`.
+- **Eyebrow:** orange tick + mono label via `SectionHead eyebrow`. **Pill:** white, hairline border, orange dot, mono text (`Pill`).
+- **Cards:** `Card` (white or dark). **FAQ:** `Faq` (accordion). **Closing band:** `CtaBand` (ink panel). **Beta note:** `BetaNote` (bordered, with a mono "Beta" tag). Keep it on every POS page.
+- **Icon tiles:** `IconTile` (neutral tint, ink icon).
+- Layout: `max-w-6xl px-5 sm:px-8`; long-form `max-w-2xl`. Mobile first: stacked full-width CTAs, header menu on phones.
+- **Use the primitives. No one-off styling on new pages.**
 
-**Today:** orange rounded-square tile with a white "F" + "Fast POS Menu" in bold sans. Keep for launch. It's clean and already everywhere.
+## Logo
 
-**Direction for v2 (post-launch, needs Billy's pick):**
-1. **Scan tile (recommended).** The orange tile with a white "F" whose middle bar is the scan line (a thin horizontal bar that extends slightly past the letter, echoing the hero animation). Reads as "fast" + "scan". Works at 16px favicon.
-2. **Receipt fold.** Tile with a zigzag bottom edge like a receipt/ticket. Payments-native. Risk: busy at small sizes.
-3. **Wordmark only.** "fast**pos**menu" lowercase with "pos" in brand orange. Good for domain-led branding if we land fastposmenu.com.
-
-Rules: logo tile is always `#ff5a1f` with white glyph, or white tile with `#ff5a1f` glyph on dark. Minimum size 24px. Clear space = half the tile width. Never stretch, outline, gradient or drop-shadow the logo. Never place next to a POS vendor logo.
-
-**Favicon:** current `favicon.ico` is the Next default. Swap to the F tile (build session owns site-wide metadata; I'll hand them the asset).
+- **Mark:** a black rounded square holding a "menu card" (three white lines of decreasing length) with an orange dot top-right (the only orange). File: `Mark` in `src/components/brand.tsx`. Works 16–64px.
+- **Wordmark:** Mark + "Fast POS Menu" in Inter Tight semibold, tight tracking (`Wordmark`).
+- Clear space: half the mark's width. Minimum 16px. On dark backgrounds, invert to a white square with ink lines and keep the orange dot.
+- Never stretch, recolor the square orange, outline, add effects, or place it next to a POS vendor's logo.
+- Favicon and OG image should use the Mark (build session owns these files).
 
 ## Imagery
 
-- **The product is the hero.** Real screenshots from `docs/screenshots/` and screen recordings of sample menus being built. Phone frames over desktop.
-- **Before/after** is the core visual: a messy paper menu (photo) → the clean structured list → "READY" import badge.
-- **Sample menus only.** Made-up restaurants (Riverbend, Casa Lupita Taqueria, Northside Pizza Co., Daybreak Cafe). Never a real merchant's menu.
-- Photos: warm, real restaurant settings (counter, kitchen pass, printed menus on a table), shot on a phone. No glossy stock handshakes, no robots, no glowing brains.
-- Illustrations: none. Use UI fragments (rows, pills, badges) as graphic elements.
+- **Product first:** `public/product/app-review.png`, `public/product/app-phone.png`, and the fictional menu photo `public/product/menu-photo.png` (Riverbend Taqueria). Demo rows set in mono with a file name (`riverbend_clover.xlsx`) and a READY badge.
+- **Before/after** stays the core story: paper menu → structured rows → import file.
+- **Sample menus only** (`docs/marketing/sample-menus.md`). Never a real merchant's menu.
+- Photos: real counters, real printed menus, natural light, shot on a phone. No stock handshakes, robots or glowing brains. No illustrations.
+- POS names appear as plain text or neutral monograms (`PosMark`). Never vendor logos or vendor brand colors used as a logo.
 
-## Social templates
+## Social and ad templates
 
 | Format | Size | Layout |
 |---|---|---|
-| LinkedIn single image | 1200×1200 | `--bg` background, big ink headline with one orange phrase, product screenshot in a phone frame bottom-right, small "Fast POS Menu" wordmark bottom-left. |
-| LinkedIn carousel (PDF) | 1080×1350 | One idea per slide, slide 1 = hook, last slide = CTA + URL. |
-| Reels/TikTok/Shorts | 1080×1920 | Hand holds phone over paper menu → screen recording → "READY" badge. Captions burned in, ink on white pill. Safe zones: keep text out of bottom 20% and right 15%. |
-| OG image | 1200×630 | Headline left, before/after right. |
+| LinkedIn single image | 1200×1200 | `#fbfbfa` canvas, Inter Tight headline with one Instrument Serif italic phrase, product shot in a hairline-bordered frame, mono eyebrow top-left, Wordmark bottom-left. |
+| LinkedIn carousel | 1080×1350 | One idea per slide. Mono slide counter (01/06) with orange tick. Last slide: Wordmark + URL. |
+| Stat graphic | 1200×1200 | 2×2 grid of hairline cards, big Inter Tight numbers (13/13), mono labels. |
+| Reels/TikTok/Shorts | 1080×1920 | Real footage + screen recording. Captions: white Inter on an ink rounded-lg label, safe zones clear (bottom 20%, right 15%). End card: Wordmark on canvas. |
+| OG image | 1200×630 | Headline left (serif accent), demo card right. |
 
 ## Do / don't
 
 | Do | Don't |
 |---|---|
-| Warm off-white backgrounds | Pure white pages or dark-mode marketing |
-| One orange accent per view | Orange body text, orange backgrounds behind long copy |
-| Real UI, real flow | Mockups of features we don't have (API push, more POS) |
-| Neutral POS monograms or plain text names | Vendor logos, vendor brand colors used to imply a relationship |
-| Big tap targets (≥44px) | Tiny text links as the main CTA on mobile |
+| Canvas, ink, hairlines | Gradients, glows, blur blobs, heavy shadows |
+| One serif-italic phrase per headline | Orange headlines or multiple accents |
+| Black primary buttons | Big orange buttons |
+| Mono for labels, files, prices | Mono for body copy |
+| Semibold max weight | Bold/extrabold "shouting" type |
+| Real product shots and sample menus | Mockups of features we don't have (API push, more POS) |

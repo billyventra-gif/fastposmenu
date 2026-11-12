@@ -28,7 +28,7 @@ export default function GuidesPage() {
                 href={`/guides/${g.slug}`}
                 className="group flex h-full flex-col rounded-xl bg-surface p-6 border border-line transition hover:ring-ink/20"
               >
-                <span className="text-xs font-semibold uppercase tracking-wide text-brand-ink">{g.tag}</span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">{g.tag}</span>
                 <h2 className="mt-2 text-xl font-semibold leading-snug">{g.title}</h2>
                 <p className="mt-2 flex-1 leading-relaxed text-muted">{g.description}</p>
                 <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">

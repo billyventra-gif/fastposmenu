@@ -100,7 +100,7 @@ export function PosLanding(p: PosLandingProps) {
               ))}
             </ol>
             <p className="mt-4 text-xs text-muted">Menu labels as of November 2026. {p.name} changes them now and then.</p>
-            <Link href={p.guide.href} className="mt-5 inline-flex items-center gap-2 font-semibold text-brand-ink hover:underline">
+            <Link href={p.guide.href} className="mt-5 inline-flex items-center gap-2 font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink">
               <BookOpen className="size-4" /> {p.guide.title}
             </Link>
           </Card>

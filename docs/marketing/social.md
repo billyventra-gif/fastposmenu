@@ -158,7 +158,7 @@ Visual: photo of Billy (his choice) or no image.
 >
 > Next: a 30-menu test set of real-world-ugly menus. I'll share results.
 
-Visual: 4-stat tile graphic (13/13 · 13/13 · 3/3 · ~20s) in brand colors.
+Visual: stat graphic per `docs/brand/visual.md` (2×2 hairline cards: 13/13 · 13/13 · 3/3 · ~20s).
 
 **L8 · Wed Nov 25 · Toast build math**
 > Toast lists menu-expert hours at about $150/hr.

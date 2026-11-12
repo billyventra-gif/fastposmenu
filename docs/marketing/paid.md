@@ -90,7 +90,7 @@ LinkedIn ad copy (single image, intro ≤ 150 chars shown):
 - Intro: "Your install team shouldn't be typing menus. Snap the merchant's menu, get a Clover, Square or Toast import file in minutes."
 - Headline: "Board the restaurant. Skip the menu build."
 - CTA button: Learn more
-- Creative: /for-isos hero on `--bg`, phone frame showing the review screen, orange headline phrase.
+- Creative: /for-isos hero on the `#fbfbfa` canvas, Inter Tight headline with the serif-italic accent phrase, product shot (`public/product/app-phone.png`) in a hairline frame. See `docs/brand/visual.md`.
 
 ### 3. Meta (Facebook / Instagram)
 

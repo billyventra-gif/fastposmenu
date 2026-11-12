@@ -197,7 +197,7 @@ export default function ForIsosPage() {
         <div className="mt-8 grid gap-3 md:hidden">
           {COMPARE.map((r) => (
             <Card key={r.label} dark={r.us}>
-              <p className={r.us ? "font-semibold text-brand" : "font-semibold"}>{r.label}</p>
+              <p className={r.us ? "font-semibold text-white" : "font-semibold"}>{r.label}</p>
               <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
                 <dt className={r.us ? "text-white/60" : "text-muted"}>Time</dt>
                 <dd className="font-semibold">{r.time}</dd>
@@ -225,7 +225,7 @@ export default function ForIsosPage() {
             <tbody className="divide-y divide-line">
               {COMPARE.map((r) => (
                 <tr key={r.label} className={r.us ? "bg-ink text-white" : undefined}>
-                  <th className={r.us ? "p-4 font-semibold text-brand" : "p-4 font-semibold"}>{r.label}</th>
+                  <th className={r.us ? "p-4 font-semibold text-white" : "p-4 font-semibold"}>{r.label}</th>
                   <td className="p-4">{r.time}</td>
                   <td className="p-4">{r.cost}</td>
                   <td className="p-4">{r.pos}</td>
