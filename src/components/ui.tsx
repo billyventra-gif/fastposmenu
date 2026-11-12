@@ -120,9 +120,10 @@ export function Stat({ value, label, tone = "default" }: { value: number | strin
 
 /** Neutral monogram tiles. We don't use POS vendors' logos. */
 const POS_STYLE: Record<PosTarget, string> = {
+  // Neutral on purpose: no vendor logos or vendor brand colors.
   square: "bg-ink text-white",
-  clover: "bg-[#1d6b4a] text-white",
-  toast: "bg-[#c2410c] text-white",
+  clover: "bg-ink text-white",
+  toast: "bg-ink text-white",
 };
 export function PosMark({ pos, className }: { pos: PosTarget; className?: string }) {
   return (
