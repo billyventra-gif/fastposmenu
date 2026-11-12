@@ -6,7 +6,7 @@ import { Callout, GuideLayout } from "@/components/marketing/GuideLayout";
 const guide = getGuide("square-item-library-import");
 
 export const metadata: Metadata = {
-  title: "Square item library import: CSV guide with modifiers · Fast POS Menu",
+  title: "Square item library import: CSV guide with modifiers",
   description: guide.description,
   alternates: { canonical: `/guides/${guide.slug}` },
   openGraph: { type: "article", title: guide.title, description: guide.description },

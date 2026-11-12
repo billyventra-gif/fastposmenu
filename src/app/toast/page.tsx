@@ -3,7 +3,7 @@ import { PosLanding } from "@/components/marketing/PosLanding";
 import { DEMO_PIZZA } from "@/components/marketing/MenuDemo";
 
 export const metadata: Metadata = {
-  title: "Toast menu upload without the build hours · Fast POS Menu",
+  title: "Toast menu upload without the build hours",
   description:
     "Turn menu photos or a PDF into a Toast bulk-import sheet and a menu-build workbook. Minutes, not menu-expert hours. $49 a menu.",
   alternates: { canonical: "/toast" },

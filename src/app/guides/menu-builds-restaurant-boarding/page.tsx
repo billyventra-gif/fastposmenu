@@ -6,7 +6,7 @@ import { Callout, GuideLayout } from "@/components/marketing/GuideLayout";
 const guide = getGuide("menu-builds-restaurant-boarding");
 
 export const metadata: Metadata = {
-  title: "Menu builds are slowing your restaurant boarding · Fast POS Menu",
+  title: "Menu builds are slowing your restaurant boarding",
   description: guide.description,
   alternates: { canonical: `/guides/${guide.slug}` },
   openGraph: { type: "article", title: guide.title, description: guide.description },

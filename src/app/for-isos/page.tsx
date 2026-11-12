@@ -16,7 +16,7 @@ import {
 import { DEMO_TACOS, MenuDemo } from "@/components/marketing/MenuDemo";
 
 export const metadata: Metadata = {
-  title: "Menu builds for ISOs and POS resellers · Fast POS Menu",
+  title: "Menu builds for ISOs and POS resellers",
   description:
     "Stop typing menus during installs. Turn the merchant's menu into a Square, Clover or Toast import file in minutes. $49 a menu.",
   alternates: { canonical: "/for-isos" },
@@ -113,7 +113,14 @@ const FAQ = [
   ],
   [
     "Is merchant data safe?",
-    "It's a restaurant menu, not cardholder data. No card data ever touches the product. Uploads are only used to build that menu.",
+    <>
+      It&apos;s a restaurant menu, not cardholder data, and checkout is hosted by Stripe, so no card data ever touches the product. Uploads are
+      only used to build that menu: they&apos;re read by our AI provider and not stored, and the draft lives in your browser. Details in our{" "}
+      <Link href="/privacy" className="font-semibold text-ink underline decoration-line underline-offset-4">
+        privacy policy
+      </Link>
+      .
+    </>,
   ],
 ] as const;
 

@@ -6,7 +6,7 @@ import { Callout, GuideLayout } from "@/components/marketing/GuideLayout";
 const guide = getGuide("import-menu-into-clover");
 
 export const metadata: Metadata = {
-  title: "How to import a menu into Clover (2026 guide) · Fast POS Menu",
+  title: "How to import a menu into Clover (2026 guide)",
   description: guide.description,
   alternates: { canonical: `/guides/${guide.slug}` },
   openGraph: { type: "article", title: guide.title, description: guide.description },

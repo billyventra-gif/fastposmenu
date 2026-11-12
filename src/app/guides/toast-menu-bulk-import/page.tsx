@@ -6,7 +6,7 @@ import { Callout, GuideLayout } from "@/components/marketing/GuideLayout";
 const guide = getGuide("toast-menu-bulk-import");
 
 export const metadata: Metadata = {
-  title: "How to upload a menu to Toast (bulk import guide) · Fast POS Menu",
+  title: "How to upload a menu to Toast (bulk import guide)",
   description: guide.description,
   alternates: { canonical: `/guides/${guide.slug}` },
   openGraph: { type: "article", title: guide.title, description: guide.description },

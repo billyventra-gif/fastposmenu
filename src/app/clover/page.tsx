@@ -3,7 +3,7 @@ import { PosLanding } from "@/components/marketing/PosLanding";
 import { DEMO_TACOS } from "@/components/marketing/MenuDemo";
 
 export const metadata: Metadata = {
-  title: "Clover menu import from photos or PDF · Fast POS Menu",
+  title: "Clover menu import from photos or PDF",
   description:
     "Turn menu photos, a PDF or an old-POS export into a Clover inventory workbook with items, categories, modifier groups and tax rates. $49 a menu.",
   alternates: { canonical: "/clover" },

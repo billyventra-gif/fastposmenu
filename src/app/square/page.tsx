@@ -3,7 +3,7 @@ import { PosLanding } from "@/components/marketing/PosLanding";
 import { DEMO_CAFE } from "@/components/marketing/MenuDemo";
 
 export const metadata: Metadata = {
-  title: "Square menu import from photos or PDF · Fast POS Menu",
+  title: "Square menu import from photos or PDF",
   description:
     "Turn any menu into a Square item library import file, plus the exact modifier sets to create first. Minutes, not a day. Works for moving off other POS too.",
   alternates: { canonical: "/square" },

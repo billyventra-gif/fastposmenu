@@ -5,7 +5,7 @@ import { GUIDES } from "@/content/guides";
 import { Container, CtaBand, MarketingShell } from "@/components/marketing/site";
 
 export const metadata: Metadata = {
-  title: "POS menu guides for Square, Clover and Toast · Fast POS Menu",
+  title: "POS menu guides for Square, Clover and Toast",
   description:
     "Plain-English guides to importing a restaurant menu into Square, Clover and Toast, and moving a menu from one POS to another.",
   alternates: { canonical: "/guides" },

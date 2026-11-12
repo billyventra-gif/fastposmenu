@@ -6,7 +6,7 @@ import { Callout, GuideLayout } from "@/components/marketing/GuideLayout";
 const guide = getGuide("switch-pos-without-retyping-menu");
 
 export const metadata: Metadata = {
-  title: "Switching POS? How to move your menu without retyping · Fast POS Menu",
+  title: "Switching POS? How to move your menu without retyping",
   description: guide.description,
   alternates: { canonical: `/guides/${guide.slug}` },
   openGraph: { type: "article", title: guide.title, description: guide.description },

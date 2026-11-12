@@ -69,7 +69,7 @@ Need from you: ___
 ## Open decisions (launch-blocking items first)
 
 1. **Merge `cmo/launch-site` to main** (needs review; build session should merge after its own work to avoid conflicts).
-2. **Public contact address** for the site and ads (e.g. hello@ on the new domain or code85.ai). Not any employer address. Right now the pages have no contact link.
+2. **Contact inbox:** the footer's Contact link uses `hello@fastposmenu.com` (from `NEXT_PUBLIC_SUPPORT_EMAIL`). That inbox only works once the domain is bought and email is set up. Not any employer address.
 3. **Domain:** buy fastposmenu.com before paid traffic.
 4. **Is /build public at launch?** The CTAs all point there. If it stays password-gated on Monday, I'll switch CTAs to a waitlist/"request access" message instead.
 5. Month-one ad budget tier.

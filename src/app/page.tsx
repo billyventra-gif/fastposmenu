@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SiteFooter } from "@/components/SiteChrome";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { ArrowRight, Camera, FileSpreadsheet, ScanLine, Sparkles, Wand2 } from "lucide-react";
 
 const DEMO = [
@@ -20,20 +20,7 @@ const STEPS = [
 export default function Home() {
   return (
     <div className="flex min-h-dvh flex-col overflow-x-hidden">
-      <header className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
-        <span className="flex items-center gap-2 font-bold tracking-tight">
-          <span className="grid size-8 place-items-center rounded-lg bg-brand text-white">F</span>
-          Fast POS Menu
-        </span>
-        <nav className="flex items-center gap-1 sm:gap-2">
-          <Link href="/pricing" className="rounded-full px-3 py-2 text-sm font-semibold hover:bg-ink/5">
-            Pricing
-          </Link>
-          <Link href="/build" className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink/85">
-            Open app
-          </Link>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-5 sm:px-8">
         <section className="grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
