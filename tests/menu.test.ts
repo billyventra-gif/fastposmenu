@@ -155,3 +155,12 @@ test("checkMenu flags missing taxes and market prices", () => {
   assert.ok(issues.some((i) => i.message.includes("No tax rate")));
   assert.ok(issues.some((i) => i.message.includes("Shrimp")));
 });
+
+test("extract rate limit: 8 per IP per hour, then a wait time", async () => {
+  const { takeExtract } = await import("../src/lib/ratelimit");
+  const t0 = 1_000_000;
+  for (let i = 0; i < 8; i++) assert.equal(takeExtract("1.2.3.4", t0 + i), 0);
+  assert.ok(takeExtract("1.2.3.4", t0 + 10) > 0, "9th read in the hour is blocked");
+  assert.equal(takeExtract("5.6.7.8", t0 + 10), 0, "other IPs unaffected");
+  assert.equal(takeExtract("1.2.3.4", t0 + 60 * 60 * 1000 + 1), 0, "window resets after an hour");
+});

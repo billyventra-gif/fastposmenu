@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, Tag } from "lucide-react";
 import { PER_MENU, PRO, fmtUsd } from "@/lib/billing/plans";
+import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 
 export const metadata: Metadata = {
-  title: "Pricing · Fast POS Menu",
-  description: "$49 a menu. Or $149 a month for 10.",
+  title: "Pricing",
+  description: "$49 a menu, any POS. Or $149 a month for 10 menus. Built for ISOs, agents and resellers.",
+  alternates: { canonical: "/pricing" },
 };
 
 const FAQ = [
@@ -18,15 +20,7 @@ const FAQ = [
 export default function PricingPage() {
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
-        <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
-          <span className="grid size-8 place-items-center rounded-lg bg-brand text-white">F</span>
-          Fast POS Menu
-        </Link>
-        <Link href="/build" className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink/85">
-          Open app
-        </Link>
-      </header>
+      <SiteHeader />
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-5 pb-20 sm:px-8">
         <section className="animate-rise py-10 text-center sm:py-14">
@@ -97,7 +91,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <footer className="border-t border-line py-6 text-center text-xs text-muted">A Code 85 Labs product.</footer>
+      <SiteFooter />
     </div>
   );
 }
