@@ -2,11 +2,13 @@ import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * Private beta gate. Basic auth on the app and API so a public URL can't spend our Claude credits.
- * Set SITE_PASSWORD in Vercel. If it's missing in production, everything behind the gate is blocked.
- * Swap for Supabase Auth when accounts land.
+ * - SITE_PASSWORD set: password required.
+ * - PUBLIC_APP=true and no SITE_PASSWORD: open to everyone (launch). Read limits in src/lib/ratelimit.ts apply.
+ * - Neither, in production: blocked.
  */
 export function proxy(req: NextRequest) {
   const password = process.env.SITE_PASSWORD;
+  if (!password && process.env.PUBLIC_APP === "true") return NextResponse.next();
   if (!password) {
     if (process.env.NODE_ENV !== "production") return NextResponse.next();
     return new NextResponse("Private beta. Not configured yet.", { status: 503 });

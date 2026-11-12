@@ -6,6 +6,7 @@ import type { Menu } from "@/lib/menu/schema";
 import type { Issue } from "@/lib/menu/normalize";
 import { POS_INFO } from "@/lib/export/registry";
 import { PER_MENU, fmtUsd } from "@/lib/billing/plans";
+import { readUtm } from "./UtmCapture";
 import { Button, Sheet, cx } from "./ui";
 
 type ExportFile = { filename: string; mime: string; base64: string };
@@ -64,7 +65,7 @@ export default function ExportSheet({
     try {
       const r = await fetch("/api/checkout", {
         method: "POST",
-        body: JSON.stringify({ draftId, target: menu.target, restaurantName: menu.restaurantName, itemCount: menu.items.length }),
+        body: JSON.stringify({ draftId, target: menu.target, restaurantName: menu.restaurantName, itemCount: menu.items.length, utm: readUtm() }),
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || !d.url) throw new Error(d.error || "Couldn't start checkout.");

@@ -7,6 +7,7 @@ import {
 } from "@/lib/ingest/spreadsheet";
 import { costUsd } from "@/lib/billing/costs";
 import { canExtract } from "@/lib/billing/entitlements";
+import { clientIp, takeExtract } from "@/lib/ratelimit";
 import { normalizeExtractions } from "@/lib/menu/normalize";
 import type { Extraction } from "@/lib/menu/extraction-schema";
 import { PosTarget } from "@/lib/menu/schema";
@@ -25,6 +26,15 @@ export async function POST(req: Request) {
   if (!target.success) return Response.json({ error: "Pick a POS first." }, { status: 400 });
   const files = form.getAll("files").filter((f): f is File => f instanceof File);
   if (files.length === 0) return Response.json({ error: "Add at least one file." }, { status: 400 });
+  if (files.length > 25) return Response.json({ error: "That's a lot of files. Send 25 or fewer at a time." }, { status: 400 });
+
+  const wait = takeExtract(clientIp(req));
+  if (wait) {
+    return Response.json(
+      { error: `You've read a lot of menus this hour. Try again in ${Math.ceil(wait / 60)} min, or email us if you need more.` },
+      { status: 429, headers: { "Retry-After": String(wait) } },
+    );
+  }
 
   // Billing hook: always allowed until Stripe is wired.
   const ent = await canExtract();

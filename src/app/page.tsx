@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteFooter } from "@/components/SiteChrome";
 import { ArrowRight, Camera, FileSpreadsheet, ScanLine, Sparkles, Wand2 } from "lucide-react";
 
 const DEMO = [
@@ -119,7 +120,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-line py-6 text-center text-xs text-muted">A Code 85 Labs product.</footer>
+      <SiteFooter />
     </div>
   );
 }
