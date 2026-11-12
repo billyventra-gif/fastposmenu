@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Check, Tag } from "lucide-react";
+import { Check } from "lucide-react";
 import { PER_MENU, PRO, fmtUsd } from "@/lib/billing/plans";
-import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { Container, CtaBand, Faq, MarketingShell, Pill, PrimaryCta, SectionHead } from "@/components/marketing/site";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -15,83 +14,111 @@ const FAQ = [
   ["What if the read is off?", "Fix it in the review screen before you pay. Flagged items are marked so you know where to look."],
   ["Promo codes?", "Yes. Enter it on the checkout page."],
   ["Which POS systems?", "Square, Clover and Toast today. Heartland, SpotOn and SkyTab are next."],
+  ["Refunds?", "If your POS rejects the file and we can't fix it within 3 business days, we refund you. See the refund policy."],
+] as const;
+
+const COMPARE: [string, string, string][] = [
+  ["Menu builds", "1 per purchase", "10 per month"],
+  ["Price per menu", "$49", "~$15"],
+  ["Extra menus", "$49 each", "$15 each"],
+  ["Square, Clover, Toast", "✓", "✓"],
+  ["Review and edit on phone", "✓", "✓"],
+  ["Promo codes", "✓", "✓"],
+  ["Priority help", "", "✓"],
 ];
 
 export default function PricingPage() {
   return (
-    <div className="flex min-h-dvh flex-col">
-      <SiteHeader />
-
-      <main className="mx-auto w-full max-w-5xl flex-1 px-5 pb-20 sm:px-8">
-        <section className="animate-rise py-10 text-center sm:py-14">
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl">Simple pricing.</h1>
-          <p className="mx-auto mt-3 max-w-md text-lg text-muted">Pay per menu, or go monthly if you board restaurants every month.</p>
-        </section>
-
-        <div className="grid gap-4 md:grid-cols-2">
-          {/* Per menu */}
-          <div className="flex animate-rise flex-col rounded-3xl bg-surface p-6 ring-1 ring-line sm:p-8">
-            <p className="font-semibold text-muted">{PER_MENU.name}</p>
-            <div className="mt-3 flex items-end gap-2">
-              <span className="text-5xl font-extrabold tracking-tight">{fmtUsd(PER_MENU.priceCents)}</span>
-              <span className="pb-1.5 text-muted">/ menu</span>
-            </div>
-            <p className="mt-2 text-muted">{PER_MENU.blurb}</p>
-            <ul className="mt-6 flex-1 space-y-3">
-              {PER_MENU.features.map((f) => (
-                <li key={f} className="flex gap-2.5">
-                  <Check className="mt-0.5 size-5 shrink-0 text-emerald-600" /> {f}
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/build"
-              className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-brand font-semibold text-white shadow-[0_10px_30px_-10px_rgba(255,90,31,0.7)] hover:bg-brand-ink"
-            >
-              Build a menu <ArrowRight className="size-5" />
-            </Link>
+    <MarketingShell>
+      <section className="relative border-b border-line">
+        <div className="bg-grid absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" aria-hidden />
+        <Container className="relative pb-20 pt-16 sm:pt-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <Pill>Pricing</Pill>
+            <h1 className="mt-6 text-[44px] font-semibold leading-[1.04] tracking-[-0.04em] sm:text-[64px]">
+              Simple pricing. <span className="font-serif font-normal italic tracking-[-0.01em]">No contracts.</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-md text-[18px] text-muted">Pay per menu, or go monthly if you board restaurants every month.</p>
           </div>
 
-          {/* Pro */}
-          <div className="relative flex animate-rise flex-col rounded-3xl bg-ink p-6 text-white sm:p-8" style={{ animationDelay: "80ms" }}>
-            <span className="absolute right-5 top-5 rounded-full bg-brand px-3 py-1 text-xs font-bold">Save ~70%</span>
-            <p className="font-semibold text-white/70">{PRO.name}</p>
-            <div className="mt-3 flex items-end gap-2">
-              <span className="text-5xl font-extrabold tracking-tight">{fmtUsd(PRO.priceCents)}</span>
-              <span className="pb-1.5 text-white/70">/ month</span>
+          <div className="mx-auto mt-14 grid max-w-4xl gap-4 md:grid-cols-2">
+            <div className="flex flex-col rounded-xl border border-line bg-surface p-8">
+              <p className="text-[15px] font-medium">{PER_MENU.name}</p>
+              <p className="mt-5 font-display text-[56px] font-semibold leading-none tracking-[-0.04em]">
+                {fmtUsd(PER_MENU.priceCents)}
+                <span className="ml-1.5 text-[15px] font-normal tracking-normal text-muted">/ menu</span>
+              </p>
+              <p className="mt-4 text-muted">{PER_MENU.blurb}</p>
+              <div className="mt-7">
+                <PrimaryCta>Build a menu</PrimaryCta>
+              </div>
+              <ul className="mt-8 space-y-3 border-t border-line pt-7 text-[15px]">
+                {PER_MENU.features.map((f) => (
+                  <li key={f} className="flex gap-3">
+                    <Check className="mt-0.5 size-4 shrink-0" /> {f}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <p className="mt-2 text-white/70">{PRO.blurb}</p>
-            <ul className="mt-6 flex-1 space-y-3">
-              {PRO.features.map((f) => (
-                <li key={f} className="flex gap-2.5">
-                  <Check className="mt-0.5 size-5 shrink-0 text-brand" /> {f}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 inline-flex h-14 items-center justify-center rounded-2xl bg-white/10 font-semibold text-white/80">
-              {PRO.available ? "Start Pro" : "Coming soon"}
+
+            <div className="flex flex-col rounded-xl bg-ink p-8 text-white">
+              <p className="flex items-center justify-between text-[15px] font-medium">
+                {PRO.name}
+                <span className="rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70">
+                  Coming soon
+                </span>
+              </p>
+              <p className="mt-5 font-display text-[56px] font-semibold leading-none tracking-[-0.04em]">
+                {fmtUsd(PRO.priceCents)}
+                <span className="ml-1.5 text-[15px] font-normal tracking-normal text-white/60">/ month</span>
+              </p>
+              <p className="mt-4 text-white/65">{PRO.blurb}</p>
+              <div className="mt-7">
+                <span className="inline-flex h-12 items-center rounded-lg border border-white/15 px-5 text-[15px] font-medium text-white/60">
+                  Join the list at launch
+                </span>
+              </div>
+              <ul className="mt-8 space-y-3 border-t border-white/10 pt-7 text-[15px]">
+                {PRO.features.map((f) => (
+                  <li key={f} className="flex gap-3">
+                    <Check className="mt-0.5 size-4 shrink-0 text-brand" /> {f}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        </div>
+          <p className="mt-6 text-center text-[13px] text-muted">Running a special? Promo codes work at checkout.</p>
+        </Container>
+      </section>
 
-        <p className="mt-6 flex items-center justify-center gap-2 text-sm text-muted">
-          <Tag className="size-4" /> Running a special? Promo codes work at checkout.
-        </p>
-
-        <section className="mx-auto mt-14 max-w-2xl">
-          <h2 className="text-xl font-bold">Questions</h2>
-          <dl className="mt-4 divide-y divide-line rounded-3xl bg-surface ring-1 ring-line">
-            {FAQ.map(([q, a]) => (
-              <div key={q} className="p-5">
-                <dt className="font-semibold">{q}</dt>
-                <dd className="mt-1 text-muted">{a}</dd>
+      <section>
+        <Container className="py-24">
+          <SectionHead eyebrow="Compare" title="What's included." center />
+          <div className="mx-auto mt-12 max-w-3xl overflow-hidden rounded-xl border border-line bg-surface">
+            <div className="grid grid-cols-[1.6fr_1fr_1fr] border-b border-line bg-bg px-5 py-3 font-mono text-[11px] uppercase tracking-wider text-muted">
+              <span />
+              <span>Per menu</span>
+              <span>Pro</span>
+            </div>
+            {COMPARE.map(([k, a, b]) => (
+              <div key={k} className="grid grid-cols-[1.6fr_1fr_1fr] border-b border-line px-5 py-3.5 text-[15px] last:border-0">
+                <span>{k}</span>
+                <span className="text-muted">{a}</span>
+                <span className="text-muted">{b}</span>
               </div>
             ))}
-          </dl>
-        </section>
-      </main>
+          </div>
+        </Container>
+      </section>
 
-      <SiteFooter />
-    </div>
+      <section className="border-t border-line">
+        <Container className="grid gap-10 py-24 lg:grid-cols-[1fr_1.6fr]">
+          <SectionHead eyebrow="FAQ" title="Pricing questions." />
+          <Faq items={FAQ} />
+        </Container>
+      </section>
+
+      <CtaBand title="Build your first menu free." sub="You only pay when you download the import file." />
+    </MarketingShell>
   );
 }

@@ -1,14 +1,18 @@
 @import "tailwindcss";
 
+/*
+ * Design system v2: editorial / fintech-template look.
+ * White canvas, near-black ink, hairline borders, small radii, one accent used sparingly.
+ */
 :root {
-  --bg: #f6f5f1;
+  --bg: #fbfbfa;
   --surface: #ffffff;
-  --ink: #15171b;
-  --muted: #6b6e75;
-  --line: #e6e3dc;
+  --ink: #0e0f11;
+  --muted: #62646b;
+  --line: #e7e6e3;
   --brand: #ff5a1f;
-  --brand-ink: #d43f0a;
-  --brand-soft: #fff1ea;
+  --brand-ink: #d6430c;
+  --brand-soft: #f3f2ef; /* neutral tint for tiles; orange is reserved for accents */
 }
 
 @theme inline {
@@ -20,9 +24,19 @@
   --color-brand: var(--brand);
   --color-brand-ink: var(--brand-ink);
   --color-brand-soft: var(--brand-soft);
-  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter, Roboto, sans-serif;
 
-  --animate-rise: rise 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --font-sans: var(--ff-inter), ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--ff-tight), var(--ff-inter), ui-sans-serif, sans-serif;
+  --font-serif: var(--ff-serif), Georgia, serif;
+  --font-mono: var(--ff-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Tighter corners everywhere (overrides Tailwind defaults used across the app). */
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.625rem;
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
+
+  --animate-rise: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-fade: fade 0.25s ease-out both;
   --animate-sheet-up: sheet-up 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-sheet-left: sheet-left 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -30,7 +44,7 @@
   --animate-shimmer: shimmer 1.6s linear infinite;
 
   @keyframes rise {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: none; }
   }
   @keyframes fade {
@@ -63,7 +77,9 @@ html {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-sans);
+  font-family: var(--ff-inter), ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+  font-feature-settings: "cv11", "ss01";
+  text-rendering: optimizeLegibility;
 }
 
 @layer base {
@@ -73,6 +89,27 @@ body {
   select {
     font-size: 16px;
   }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--ff-tight), var(--ff-inter), ui-sans-serif, sans-serif;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  h3 {
+    letter-spacing: -0.012em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Faint engineering grid, used behind heroes. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(14 15 17 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(14 15 17 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 .pb-safe {
@@ -87,7 +124,7 @@ body {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, #eeece6 25%, #f8f7f3 50%, #eeece6 75%);
+  background: linear-gradient(90deg, #efeeeb 25%, #f8f8f6 50%, #efeeeb 75%);
   background-size: 200% 100%;
   animation: var(--animate-shimmer);
 }

@@ -11,8 +11,8 @@ export function cx(...c: (string | false | null | undefined)[]) {
 
 type Variant = "primary" | "secondary" | "ghost" | "danger";
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand text-white shadow-[0_6px_20px_-6px_rgba(255,90,31,0.6)] hover:bg-brand-ink active:scale-[0.98]",
-  secondary: "bg-surface text-ink ring-1 ring-line hover:ring-ink/20 active:scale-[0.98]",
+  primary: "bg-ink text-white hover:bg-ink/85 active:scale-[0.99]",
+  secondary: "bg-surface text-ink border border-line hover:border-ink/25 active:scale-[0.99]",
   ghost: "text-ink hover:bg-ink/5",
   danger: "text-red-600 hover:bg-red-50",
 };
@@ -27,10 +27,10 @@ export function Button({
     <button
       {...props}
       className={cx(
-        "inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition disabled:pointer-events-none disabled:opacity-40",
+        "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition disabled:pointer-events-none disabled:opacity-40",
         size === "sm" && "h-9 px-3 text-sm",
         size === "md" && "h-11 px-4",
-        size === "lg" && "h-14 px-6 text-[17px]",
+        size === "lg" && "h-13 px-6 text-[16px]",
         VARIANTS[variant],
         className,
       )}
@@ -111,8 +111,8 @@ export function Sheet({
 
 export function Stat({ value, label, tone = "default" }: { value: number | string; label: string; tone?: "default" | "warn" }) {
   return (
-    <div className={cx("rounded-2xl px-3 py-2.5", tone === "warn" ? "bg-amber-100 text-amber-950" : "bg-surface ring-1 ring-line")}>
-      <div className="text-xl font-bold tabular-nums leading-none">{value}</div>
+    <div className={cx("rounded-xl border px-3 py-2.5", tone === "warn" ? "border-amber-200 bg-amber-50 text-amber-950" : "border-line bg-surface")}>
+      <div className="font-display text-xl font-semibold tabular-nums leading-none">{value}</div>
       <div className={cx("mt-1 text-xs", tone === "warn" ? "text-amber-900" : "text-muted")}>{label}</div>
     </div>
   );
@@ -121,12 +121,12 @@ export function Stat({ value, label, tone = "default" }: { value: number | strin
 /** Neutral monogram tiles. We don't use POS vendors' logos. */
 const POS_STYLE: Record<PosTarget, string> = {
   square: "bg-ink text-white",
-  clover: "bg-emerald-600 text-white",
-  toast: "bg-orange-500 text-white",
+  clover: "bg-[#1d6b4a] text-white",
+  toast: "bg-[#c2410c] text-white",
 };
 export function PosMark({ pos, className }: { pos: PosTarget; className?: string }) {
   return (
-    <span className={cx("grid place-items-center rounded-2xl font-black uppercase", POS_STYLE[pos], className)} aria-hidden>
+    <span className={cx("grid place-items-center rounded-lg font-display font-semibold uppercase", POS_STYLE[pos], className)} aria-hidden>
       {pos[0]}
     </span>
   );
@@ -143,4 +143,4 @@ export function Field({ label, children, hint }: { label: string; children: Reac
 }
 
 export const inputCls =
-  "h-12 w-full rounded-xl border-0 bg-bg px-3.5 ring-1 ring-line transition placeholder:text-muted/70 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-brand";
+  "h-12 w-full rounded-lg border-0 bg-surface px-3.5 ring-1 ring-line transition placeholder:text-muted/70 focus:outline-none focus:ring-2 focus:ring-ink";

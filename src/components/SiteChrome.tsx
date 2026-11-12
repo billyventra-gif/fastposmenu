@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ArrowUpRight, Menu as MenuIcon } from "lucide-react";
 import { SITE } from "@/lib/site";
+import { Wordmark } from "./brand";
 
 const NAV = [
   { href: "/for-isos", label: "For ISOs" },
@@ -13,37 +15,47 @@ const NAV = [
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
-      <span className="grid size-8 place-items-center rounded-lg bg-brand text-white">F</span>
-      {SITE.name}
+    <Link href="/" aria-label={`${SITE.name} home`}>
+      <Wordmark />
     </Link>
   );
 }
 
 export function SiteHeader() {
   return (
-    <header>
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
+    <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
         <Logo />
-        <nav aria-label="Main" className="flex items-center gap-1">
+        <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="hidden rounded-full px-3 py-2 text-sm font-semibold hover:bg-ink/5 lg:inline-flex">
+            <Link key={n.href} href={n.href} className="text-[14px] text-muted transition-colors hover:text-ink">
               {n.label}
             </Link>
           ))}
-          <Link href="/build" className="ml-1 rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white hover:bg-ink/85">
+        </nav>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/build"
+            className="inline-flex h-9 items-center rounded-lg bg-ink px-3.5 text-[14px] font-medium text-white transition-colors hover:bg-ink/85"
+          >
             Open app
           </Link>
-        </nav>
+          {/* Mobile menu: no JS needed. Each page renders a fresh header, so it closes on navigation. */}
+          <details className="group relative lg:hidden">
+            <summary className="grid size-9 cursor-pointer list-none place-items-center rounded-lg border border-line bg-surface [&::-webkit-details-marker]:hidden">
+              <MenuIcon className="size-4" />
+              <span className="sr-only">Menu</span>
+            </summary>
+            <div className="absolute right-0 top-11 w-60 rounded-xl border border-line bg-surface p-1.5 shadow-[0_12px_32px_-12px_rgba(0,0,0,0.18)]">
+              {NAV.map((n) => (
+                <Link key={n.href} href={n.href} className="block rounded-lg px-3 py-2.5 text-[15px] hover:bg-bg">
+                  {n.label}
+                </Link>
+              ))}
+            </div>
+          </details>
+        </div>
       </div>
-      {/* Phones/tablets: scrollable pill row instead of a hamburger. One tap to any page. */}
-      <nav aria-label="Sections" className="no-scrollbar mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-2 sm:px-8 lg:hidden">
-        {NAV.map((n) => (
-          <Link key={n.href} href={n.href} className="shrink-0 rounded-full bg-surface px-3.5 py-1.5 text-sm font-semibold ring-1 ring-line">
-            {n.label}
-          </Link>
-        ))}
-      </nav>
     </header>
   );
 }
@@ -69,25 +81,45 @@ const FOOTER_COLS: { title: string; links: [string, string][] }[] = [
       ["/guides", "All guides"],
     ],
   },
+  {
+    title: "Company",
+    links: [
+      ["/terms", "Terms"],
+      ["/privacy", "Privacy"],
+      ["/refunds", "Refunds"],
+      [`mailto:${SITE.supportEmail}`, "Contact"],
+    ],
+  },
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line">
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-10 text-sm sm:grid-cols-3 sm:px-8">
+    <footer className="border-t border-line bg-surface">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 text-[14px] sm:px-8 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <Logo />
-          <p className="mt-3 max-w-xs text-muted">Any restaurant menu into Square, Clover or Toast, in minutes. Built for the people who board restaurants.</p>
+          <p className="mt-4 max-w-xs leading-relaxed text-muted">
+            Any restaurant menu into Square, Clover or Toast, in minutes. Built for the people who board restaurants.
+          </p>
+          <Link href="/build" className="mt-5 inline-flex items-center gap-1 font-medium hover:underline">
+            Build a menu <ArrowUpRight className="size-4" />
+          </Link>
         </div>
         {FOOTER_COLS.map((c) => (
           <div key={c.title}>
-            <p className="font-semibold">{c.title}</p>
-            <ul className="mt-3 space-y-2 text-muted">
+            <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">{c.title}</p>
+            <ul className="mt-4 space-y-2.5">
               {c.links.map(([href, label]) => (
                 <li key={href}>
-                  <Link href={href} className="hover:text-ink">
-                    {label}
-                  </Link>
+                  {href.startsWith("mailto:") ? (
+                    <a href={href} className="text-ink/80 hover:text-ink">
+                      {label}
+                    </a>
+                  ) : (
+                    <Link href={href} className="text-ink/80 hover:text-ink">
+                      {label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -95,17 +127,9 @@ export function SiteFooter() {
         ))}
       </div>
       <div className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-xs text-muted sm:flex-row sm:px-8">
-          <span className="text-center sm:text-left">
-            © 2026 {SITE.company}. Square, Clover and Toast are trademarks of their owners. Fast POS Menu is independent and not affiliated with or
-            endorsed by them.
-          </span>
-          <nav className="flex shrink-0 gap-4">
-            <Link href="/terms" className="hover:text-ink">Terms</Link>
-            <Link href="/privacy" className="hover:text-ink">Privacy</Link>
-            <Link href="/refunds" className="hover:text-ink">Refunds</Link>
-            <a href={`mailto:${SITE.supportEmail}`} className="hover:text-ink">Contact</a>
-          </nav>
+        <div className="mx-auto max-w-6xl px-5 py-6 text-[12px] leading-relaxed text-muted sm:px-8">
+          © 2026 {SITE.company}. Square, Clover and Toast are trademarks of their owners. Fast POS Menu is independent and not affiliated with or
+          endorsed by them.
         </div>
       </div>
     </footer>
@@ -117,10 +141,11 @@ export function LegalPage({ title, updated, children }: { title: string; updated
   return (
     <div className="flex min-h-dvh flex-col">
       <SiteHeader />
-      <main className="mx-auto w-full max-w-2xl flex-1 px-5 pb-20 pt-8 sm:px-8">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1>
-        <p className="mt-2 text-sm text-muted">Last updated {updated}</p>
-        <div className="mt-8 space-y-6 leading-relaxed [&_h2]:mt-8 [&_h2]:text-lg [&_h2]:font-bold [&_li]:ml-5 [&_li]:list-disc [&_p]:text-ink/85 [&_ul]:space-y-1.5">
+      <main className="mx-auto w-full max-w-2xl flex-1 px-5 pb-24 pt-14 sm:px-8">
+        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Legal</p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight">{title}</h1>
+        <p className="mt-3 text-sm text-muted">Last updated {updated}</p>
+        <div className="mt-10 space-y-5 text-[15.5px] leading-[1.7] text-ink/85 [&_a]:underline [&_a]:underline-offset-2 [&_b]:font-semibold [&_b]:text-ink [&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-ink [&_li]:ml-5 [&_li]:list-disc [&_ul]:space-y-2">
           {children}
         </div>
       </main>

@@ -10,8 +10,8 @@ const fmtDate = (iso: string) =>
 /** Long-form styles without a typography plugin. */
 const PROSE = [
   "text-[17px] leading-relaxed text-ink/90",
-  "[&_h2]:mt-12 [&_h2]:text-2xl [&_h2]:font-extrabold [&_h2]:leading-tight [&_h2]:tracking-tight [&_h2]:text-ink",
-  "[&_h3]:mt-8 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-ink",
+  "[&_h2]:mt-12 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:leading-tight [&_h2]:tracking-tight [&_h2]:text-ink",
+  "[&_h3]:mt-8 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-ink",
   "[&_p]:mt-4 [&_ul]:mt-4 [&_ol]:mt-4",
   "[&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:space-y-2 [&_ol]:pl-6",
   "[&_li]:pl-1 [&_strong]:font-semibold [&_strong]:text-ink",
@@ -67,13 +67,13 @@ export function GuideLayout({
             <ChevronRight className="size-4" />
             <span>{guide.tag}</span>
           </nav>
-          <h1 className="mt-4 text-[34px] font-extrabold leading-[1.1] tracking-tight sm:text-5xl">{guide.title}</h1>
+          <h1 className="mt-4 text-[34px] font-semibold leading-[1.1] tracking-tight sm:text-5xl">{guide.title}</h1>
           <p className="mt-4 text-sm text-muted">
             Updated {fmtDate(guide.updated)} · {guide.readMins} min read
           </p>
 
-          <aside className="mt-8 rounded-3xl bg-brand-soft p-5 sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-wide text-brand-ink">Short version</p>
+          <aside className="mt-8 rounded-xl bg-brand-soft p-5 sm:p-6">
+            <p className="text-sm font-semibold uppercase tracking-wide text-brand-ink">Short version</p>
             <div className="mt-2 leading-relaxed [&_li]:mt-1.5 [&_ul]:list-disc [&_ul]:pl-5">{tldr}</div>
           </aside>
 
@@ -90,13 +90,13 @@ export function GuideLayout({
       <CtaBand title={cta.title} sub={cta.sub} cta={cta.label} />
 
       <Container className="mt-16">
-        <h2 className="text-xl font-extrabold tracking-tight">More guides</h2>
+        <h2 className="text-xl font-semibold tracking-tight">More guides</h2>
         <ul className="mt-4 grid gap-3 md:grid-cols-3">
           {related.map((g) => (
             <li key={g.slug}>
-              <Link href={`/guides/${g.slug}`} className="block h-full rounded-3xl bg-surface p-5 ring-1 ring-line transition hover:ring-ink/20">
-                <span className="text-xs font-bold uppercase tracking-wide text-brand-ink">{g.tag}</span>
-                <span className="mt-2 block font-bold leading-snug">{g.short}</span>
+              <Link href={`/guides/${g.slug}`} className="block h-full rounded-xl bg-surface p-5 border border-line transition hover:ring-ink/20">
+                <span className="text-xs font-semibold uppercase tracking-wide text-brand-ink">{g.tag}</span>
+                <span className="mt-2 block font-semibold leading-snug">{g.short}</span>
               </Link>
             </li>
           ))}
@@ -108,5 +108,5 @@ export function GuideLayout({
 
 /** Inline callout used inside articles. */
 export function Callout({ children }: { children: ReactNode }) {
-  return <div className="mt-6 rounded-2xl bg-surface p-5 ring-1 ring-line [&>p:first-child]:mt-0">{children}</div>;
+  return <div className="mt-6 rounded-2xl bg-surface p-5 border border-line [&>p:first-child]:mt-0">{children}</div>;
 }

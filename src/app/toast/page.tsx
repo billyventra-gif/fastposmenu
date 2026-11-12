@@ -16,7 +16,7 @@ export default function ToastPage() {
       name="Toast"
       h1={
         <>
-          A Toast menu build <span className="text-brand">without the hourly bill.</span>
+          A Toast menu build <span className="font-serif font-normal italic tracking-[-0.01em]">without the hourly bill.</span>
         </>
       }
       sub="Toast lists menu-expert hours at about $150 an hour. Snap the menu instead and get a Toast-ready build in minutes."

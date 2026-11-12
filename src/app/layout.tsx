@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE } from "@/lib/site";
 import UtmCapture from "@/components/UtmCapture";
+import { inter, interTight, mono, serif } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,12 +18,12 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f6f5f1",
+  themeColor: "#fbfbfa",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`h-full antialiased ${inter.variable} ${interTight.variable} ${serif.variable} ${mono.variable}`}>
       <body className="min-h-full flex flex-col">
         {children}
         <Analytics />

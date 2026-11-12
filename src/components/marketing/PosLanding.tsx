@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { BookOpen, Camera, Check, FileSpreadsheet, ScanLine, Wand2 } from "lucide-react";
-import { PosMark } from "@/components/ui";
 import type { PosTarget } from "@/lib/menu/schema";
 import { BetaNote, Card, Container, CtaBand, Faq, IconTile, MarketingShell, Pill, PrimaryCta, SecondaryCta, SectionHead } from "./site";
 import { MenuDemo, type DemoRow } from "./MenuDemo";
@@ -35,11 +34,8 @@ export function PosLanding(p: PosLandingProps) {
       <Container>
         <section className="grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           <div className="animate-rise">
-            <div className="flex items-center gap-3">
-              <PosMark pos={p.pos} className="size-9 text-base" />
-              <Pill>{p.name} menu import</Pill>
-            </div>
-            <h1 className="mt-5 text-[40px] font-extrabold leading-[1.05] tracking-tight sm:text-6xl">{p.h1}</h1>
+            <Pill>{p.name} menu import</Pill>
+            <h1 className="mt-5 text-[40px] font-semibold leading-[1.05] tracking-tight sm:text-6xl">{p.h1}</h1>
             <p className="mt-5 max-w-lg text-lg text-muted">{p.sub}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <PrimaryCta>Build a {p.name} menu</PrimaryCta>
@@ -54,11 +50,11 @@ export function PosLanding(p: PosLandingProps) {
       <Container className="py-10">
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {FLOW.map(({ icon: Icon, title, body }) => (
-            <li key={title} className="rounded-3xl bg-surface p-5 ring-1 ring-line">
+            <li key={title} className="rounded-xl bg-surface p-5 border border-line">
               <IconTile>
                 <Icon className="size-5" />
               </IconTile>
-              <h2 className="mt-4 font-bold">{title}</h2>
+              <h2 className="mt-4 font-semibold">{title}</h2>
               <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
             </li>
           ))}
@@ -70,7 +66,7 @@ export function PosLanding(p: PosLandingProps) {
         <div className="mt-8 grid gap-3 md:grid-cols-2">
           {p.files.map((f) => (
             <Card key={f.title}>
-              <h3 className="text-lg font-bold">{f.title}</h3>
+              <h3 className="text-lg font-semibold">{f.title}</h3>
               <p className="mt-1 leading-relaxed text-muted">{f.body}</p>
             </Card>
           ))}
@@ -94,11 +90,11 @@ export function PosLanding(p: PosLandingProps) {
             </ul>
           </div>
           <Card>
-            <p className="text-sm font-bold uppercase tracking-wide text-muted">Then, in {p.name}</p>
+            <p className="text-sm font-semibold uppercase tracking-wide text-muted">Then, in {p.name}</p>
             <ol className="mt-4 space-y-3">
               {p.importSteps.map((s, i) => (
                 <li key={s} className="flex gap-3">
-                  <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-bold text-brand-ink">{i + 1}</span>
+                  <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-semibold text-brand-ink">{i + 1}</span>
                   <span className="leading-relaxed">{s}</span>
                 </li>
               ))}
@@ -113,7 +109,7 @@ export function PosLanding(p: PosLandingProps) {
 
       <Container className="py-12">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl font-extrabold tracking-tight">{p.name} questions</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">{p.name} questions</h2>
           <div className="mt-5">
             <Faq items={p.faq} />
           </div>

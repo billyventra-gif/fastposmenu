@@ -132,10 +132,10 @@ export default function ForIsosPage() {
         <section className="grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           <div className="animate-rise">
             <Pill>For ISOs, agents and POS resellers</Pill>
-            <h1 className="mt-5 text-[40px] font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
+            <h1 className="mt-5 text-[40px] font-semibold leading-[1.05] tracking-tight sm:text-6xl">
               Board the restaurant.
               <br />
-              <span className="text-brand">Skip the menu build.</span>
+              <span className="font-serif font-normal italic tracking-[-0.01em]">Skip the menu build.</span>
             </h1>
             <p className="mt-5 max-w-lg text-lg text-muted">
               Snap the menu the merchant already has. Get an import file for Clover, Square or Toast in minutes, not days. Merchants run their first
@@ -164,7 +164,7 @@ export default function ForIsosPage() {
               <IconTile>
                 <Icon className="size-5" />
               </IconTile>
-              <h3 className="mt-4 text-lg font-bold">{title}</h3>
+              <h3 className="mt-4 text-lg font-semibold">{title}</h3>
               <p className="mt-1 leading-relaxed text-muted">{body}</p>
             </Card>
           ))}
@@ -176,14 +176,14 @@ export default function ForIsosPage() {
         <SectionHead eyebrow="How it works" title="From the menu on the counter to an import file." sub="Built to run from a phone, in the parking lot if you have to." />
         <ol className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map(({ icon: Icon, title, body }, i) => (
-            <li key={title} className="rounded-3xl bg-surface p-5 ring-1 ring-line">
+            <li key={title} className="rounded-xl bg-surface p-5 border border-line">
               <div className="flex items-center justify-between">
                 <IconTile>
                   <Icon className="size-5" />
                 </IconTile>
-                <span className="text-sm font-bold text-muted tabular-nums">0{i + 1}</span>
+                <span className="text-sm font-semibold text-muted tabular-nums">0{i + 1}</span>
               </div>
-              <h3 className="mt-4 font-bold">{title}</h3>
+              <h3 className="mt-4 font-semibold">{title}</h3>
               <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
             </li>
           ))}
@@ -197,7 +197,7 @@ export default function ForIsosPage() {
         <div className="mt-8 grid gap-3 md:hidden">
           {COMPARE.map((r) => (
             <Card key={r.label} dark={r.us}>
-              <p className={r.us ? "font-bold text-brand" : "font-bold"}>{r.label}</p>
+              <p className={r.us ? "font-semibold text-brand" : "font-semibold"}>{r.label}</p>
               <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
                 <dt className={r.us ? "text-white/60" : "text-muted"}>Time</dt>
                 <dd className="font-semibold">{r.time}</dd>
@@ -211,7 +211,7 @@ export default function ForIsosPage() {
             </Card>
           ))}
         </div>
-        <div className="mt-8 hidden overflow-hidden rounded-3xl bg-surface ring-1 ring-line md:block">
+        <div className="mt-8 hidden overflow-hidden rounded-xl bg-surface border border-line md:block">
           <table className="w-full text-left text-sm">
             <thead className="bg-bg text-muted">
               <tr>
@@ -225,7 +225,7 @@ export default function ForIsosPage() {
             <tbody className="divide-y divide-line">
               {COMPARE.map((r) => (
                 <tr key={r.label} className={r.us ? "bg-ink text-white" : undefined}>
-                  <th className={r.us ? "p-4 font-bold text-brand" : "p-4 font-bold"}>{r.label}</th>
+                  <th className={r.us ? "p-4 font-semibold text-brand" : "p-4 font-semibold"}>{r.label}</th>
                   <td className="p-4">{r.time}</td>
                   <td className="p-4">{r.cost}</td>
                   <td className="p-4">{r.pos}</td>
@@ -252,7 +252,7 @@ export default function ForIsosPage() {
                   <Icon className="size-5" />
                 </IconTile>
                 <div>
-                  <h3 className="text-lg font-bold">{title}</h3>
+                  <h3 className="text-lg font-semibold">{title}</h3>
                   <p className="mt-1 leading-relaxed text-muted">{body}</p>
                 </div>
               </div>
@@ -278,7 +278,7 @@ export default function ForIsosPage() {
 
       {/* Proof */}
       <Container className="py-12">
-        <div className="grid gap-8 rounded-[32px] bg-brand-soft p-6 sm:p-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
+        <div className="grid gap-8 rounded-2xl border border-line bg-surface p-6 sm:p-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <SectionHead eyebrow="Tested, not hyped" title="13 for 13 on our sample menu." sub="Read from a phone photo and from a PDF, about 20 seconds each." />
           <div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -288,8 +288,8 @@ export default function ForIsosPage() {
                 ["3/3", "modifier groups"],
                 ["~20s", "per read"],
               ].map(([v, l]) => (
-                <div key={l} className="rounded-2xl bg-surface px-4 py-3 ring-1 ring-line">
-                  <div className="text-2xl font-extrabold tabular-nums">{v}</div>
+                <div key={l} className="rounded-2xl bg-surface px-4 py-3 border border-line">
+                  <div className="text-2xl font-semibold tabular-nums">{v}</div>
                   <div className="text-sm text-muted">{l}</div>
                 </div>
               ))}
@@ -308,14 +308,14 @@ export default function ForIsosPage() {
         <div className="mt-8 grid gap-3 md:grid-cols-2">
           <Card>
             <p className="font-semibold text-muted">Per menu</p>
-            <p className="mt-2 text-4xl font-extrabold tracking-tight">
+            <p className="mt-2 text-4xl font-semibold tracking-tight">
               $49 <span className="text-base font-medium text-muted">/ menu</span>
             </p>
             <p className="mt-2 text-muted">Less than an hour of anyone&apos;s time. Build and review free; pay when you download.</p>
           </Card>
           <Card dark>
             <p className="font-semibold text-white/70">Pro · coming soon</p>
-            <p className="mt-2 text-4xl font-extrabold tracking-tight">
+            <p className="mt-2 text-4xl font-semibold tracking-tight">
               $149 <span className="text-base font-medium text-white/70">/ month</span>
             </p>
             <p className="mt-2 text-white/70">10 builds a month, about $15 a menu. Extra builds $15. For shops boarding every month.</p>
@@ -326,7 +326,7 @@ export default function ForIsosPage() {
       {/* FAQ */}
       <Container className="py-12">
         <div className="mx-auto max-w-2xl">
-          <h2 className="text-2xl font-extrabold tracking-tight">Questions agents ask</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">Questions agents ask</h2>
           <div className="mt-5">
             <Faq items={FAQ} />
           </div>

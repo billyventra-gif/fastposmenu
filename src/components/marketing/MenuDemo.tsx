@@ -1,4 +1,8 @@
-/** Animated "paper menu → import file" visual. Sample data only (made-up restaurants). */
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
+import menuPhoto from "../../../public/product/menu-photo.png";
+
+/** "Paper menu → import file" visual. Sample data only (made-up restaurants). */
 
 export type DemoRow = { name: string; price: string; tag: string };
 
@@ -27,40 +31,49 @@ export const DEMO_CAFE: DemoRow[] = [
 ];
 
 export function MenuDemo({ title, label, rows }: { title: string; label: string; rows: DemoRow[] }) {
+  const file = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "")}_${label.toLowerCase().split(" ")[0]}.xlsx`;
   return (
-    <div className="relative mx-auto w-full max-w-md lg:max-w-none" aria-hidden>
-      <div className="absolute -inset-6 -z-10 rounded-[48px] bg-gradient-to-br from-brand/20 via-brand-soft to-transparent blur-2xl" />
-      <div className="grid grid-cols-[0.8fr_1.2fr] gap-3 sm:gap-4">
-        <div className="relative overflow-hidden rounded-3xl bg-[#fffaf0] p-4 shadow-xl ring-1 ring-line">
-          <p className="text-center font-serif text-[11px] font-bold tracking-widest">{title}</p>
-          <div className="mt-3 space-y-2.5">
-            {Array.from({ length: 11 }).map((_, i) => (
-              <div key={i} className="flex justify-between gap-2">
-                <span className="h-1.5 rounded-full bg-ink/25" style={{ width: `${40 + ((i * 29) % 45)}%` }} />
-                <span className="h-1.5 w-5 rounded-full bg-ink/30" />
-              </div>
-            ))}
+    <div className="relative mx-auto w-full max-w-lg lg:max-w-none" aria-hidden>
+      <div className="relative grid grid-cols-[0.72fr_1fr] items-center gap-3 sm:gap-5">
+        {/* Before: the paper menu */}
+        <figure className="relative">
+          <div className="-rotate-2 overflow-hidden rounded-lg border border-line bg-white p-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_18px_40px_-20px_rgba(0,0,0,0.25)]">
+            <Image src={menuPhoto} alt="" className="aspect-[3/4] w-full rounded-[4px] object-cover object-top" sizes="(max-width: 640px) 40vw, 260px" priority />
           </div>
-          <div className="absolute inset-x-0 h-12 animate-scan bg-gradient-to-b from-transparent via-brand/25 to-transparent">
-            <div className="absolute inset-x-0 top-1/2 h-0.5 bg-brand shadow-[0_0_10px_2px_rgba(255,90,31,0.6)]" />
+          <figcaption className="mt-3 text-center font-mono text-[10.5px] uppercase tracking-[0.12em] text-muted">menu-photo.jpg</figcaption>
+          <span className="absolute -right-3 top-1/2 z-10 grid size-7 -translate-y-1/2 place-items-center rounded-full border border-line bg-surface sm:-right-4 sm:size-8">
+            <ArrowRight className="size-3.5" />
+          </span>
+        </figure>
+
+        {/* After: the import file */}
+        <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_48px_-24px_rgba(0,0,0,0.22)]">
+          <div className="flex items-center justify-between gap-2 border-b border-line bg-bg px-3 py-2.5 sm:px-4">
+            <span className="truncate font-mono text-[10.5px] text-muted">{file}</span>
+            <span className="flex shrink-0 items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-emerald-700">
+              <span className="size-1.5 rounded-full bg-emerald-500" /> Ready
+            </span>
           </div>
-        </div>
-        <div className="rounded-3xl bg-surface p-3 shadow-xl ring-1 ring-line sm:p-4">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wide text-muted">{label}</span>
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">READY</span>
+          <div className="grid grid-cols-[1fr_auto] gap-x-3 border-b border-line px-3 py-1.5 font-mono text-[9.5px] uppercase tracking-wider text-muted sm:px-4">
+            <span>Item · modifiers</span>
+            <span>Price</span>
           </div>
-          <ul className="space-y-1.5">
+          <ul>
             {rows.map((d, i) => (
-              <li key={d.name} className="animate-rise rounded-xl bg-bg px-2.5 py-2" style={{ animationDelay: `${300 + i * 180}ms` }}>
-                <div className="flex items-center justify-between gap-2 text-[13px] font-semibold">
-                  <span className="truncate">{d.name}</span>
-                  <span className="shrink-0 tabular-nums">{d.price}</span>
-                </div>
-                <div className="text-[11px] text-muted">{d.tag}</div>
+              <li
+                key={d.name}
+                className="grid animate-rise grid-cols-[1fr_auto] items-baseline gap-x-3 border-b border-line/70 px-3 py-2 last:border-0 sm:px-4 sm:py-2.5"
+                style={{ animationDelay: `${200 + i * 120}ms` }}
+              >
+                <span className="min-w-0">
+                  <span className="block truncate text-[12.5px] font-medium sm:text-[13.5px]">{d.name}</span>
+                  <span className="block truncate text-[11px] text-muted">{d.tag}</span>
+                </span>
+                <span className="font-mono text-[11.5px] tabular-nums sm:text-[12.5px]">{d.price}</span>
               </li>
             ))}
           </ul>
+          <div className="border-t border-line bg-bg px-3 py-2 font-mono text-[10px] text-muted sm:px-4">{label}</div>
         </div>
       </div>
     </div>

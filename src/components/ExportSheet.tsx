@@ -97,7 +97,7 @@ export default function ExportSheet({
               <Lock className="size-4" /> Your file is ready to unlock
             </div>
             <div className="mt-2 flex items-end gap-2">
-              <span className="text-4xl font-extrabold">{fmtUsd(PER_MENU.priceCents)}</span>
+              <span className="text-4xl font-semibold">{fmtUsd(PER_MENU.priceCents)}</span>
               <span className="pb-1 text-white/70">this menu</span>
             </div>
             <p className="mt-1 text-sm text-white/70">
@@ -170,11 +170,11 @@ export default function ExportSheet({
           </div>
 
           <div>
-            <p className="font-bold">Next steps</p>
+            <p className="font-semibold">Next steps</p>
             <ol className="mt-3 space-y-3">
               {steps.map((s, i) => (
                 <li key={i} className="flex gap-3">
-                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-brand-soft text-xs font-bold text-brand-ink">{i + 1}</span>
+                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-brand-soft text-xs font-semibold text-brand-ink">{i + 1}</span>
                   <div className="text-sm leading-relaxed">
                     {s}
                     {i === 0 && bullets.length > 0 && (

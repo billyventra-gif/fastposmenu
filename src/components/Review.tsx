@@ -99,7 +99,7 @@ export default function Review({
         value={menu.restaurantName}
         placeholder="Restaurant name"
         onChange={(e) => onChange({ ...menu, restaurantName: e.target.value })}
-        className="-ml-1 mt-1 w-full rounded-lg bg-transparent px-1 text-3xl font-bold tracking-tight placeholder:text-muted/50 hover:bg-ink/5 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-brand sm:text-4xl"
+        className="-ml-1 mt-1 w-full rounded-lg bg-transparent px-1 text-3xl font-semibold tracking-tight placeholder:text-muted/50 hover:bg-ink/5 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-brand sm:text-4xl"
       />
 
       {/* Stats */}
@@ -216,7 +216,7 @@ export default function Review({
                 return (
                   <div key={c.id} id={`cat-${c.id}`} className="scroll-mt-44 lg:scroll-mt-32">
                     <div className="mb-3 flex items-center justify-between gap-2">
-                      <h3 className="text-xl font-bold tracking-tight">{c.name}</h3>
+                      <h3 className="text-xl font-semibold tracking-tight">{c.name}</h3>
                       <button onClick={() => setCatId(c.id)} aria-label={`Edit ${c.name}`} className="grid size-10 place-items-center rounded-full hover:bg-ink/5">
                         <MoreHorizontal className="size-5" />
                       </button>
@@ -259,7 +259,7 @@ export default function Review({
               <button key={g.id} onClick={() => setGroupId(g.id)} className="animate-rise rounded-3xl bg-surface p-4 text-left ring-1 ring-line transition hover:shadow-md">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="text-lg font-bold">{g.name}</p>
+                    <p className="text-lg font-semibold">{g.name}</p>
                     <p className="text-sm text-muted">
                       {ruleLabel(g)} · on {used} item{used === 1 ? "" : "s"}
                     </p>
@@ -538,7 +538,7 @@ function Stepper({ label, value, onSet, min, allowNone }: { label: string; value
         >
           −
         </button>
-        <span className="text-lg font-bold tabular-nums">{value ?? "Any"}</span>
+        <span className="text-lg font-semibold tabular-nums">{value ?? "Any"}</span>
         <button aria-label={`More ${label}`} onClick={() => onSet(value === null ? Math.max(min, 1) : value + 1)} className="grid size-10 place-items-center rounded-xl bg-surface text-xl ring-1 ring-line">
           +
         </button>
@@ -712,7 +712,7 @@ function TaxPanel({ menu, onChange }: { menu: Menu; onChange: (m: Menu) => void 
   return (
     <div className="max-w-xl animate-rise space-y-4">
       <div className="rounded-3xl bg-surface p-5 ring-1 ring-line">
-        <p className="font-bold">Sales tax</p>
+        <p className="font-semibold">Sales tax</p>
         <p className="mt-1 text-sm text-muted">Applied to every item not marked &quot;No tax.&quot;</p>
         <div className="mt-4 grid grid-cols-[1fr_8rem] gap-3">
           <Field label="Name">

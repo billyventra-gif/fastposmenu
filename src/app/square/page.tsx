@@ -16,7 +16,7 @@ export default function SquarePage() {
       name="Square"
       h1={
         <>
-          A Square item library <span className="text-brand">in minutes, not a day.</span>
+          A Square item library <span className="font-serif font-normal italic tracking-[-0.01em]">in minutes, not a day.</span>
         </>
       }
       sub="Photos, a PDF or another POS's export in. A Square item library import file out, with sizes as variations and modifier sets mapped."

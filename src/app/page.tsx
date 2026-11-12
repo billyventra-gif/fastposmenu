@@ -1,113 +1,273 @@
+import Image from "next/image";
 import Link from "next/link";
-import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
-import { ArrowRight, Camera, FileSpreadsheet, ScanLine, Sparkles, Wand2 } from "lucide-react";
+import type { ReactNode } from "react";
+import { ArrowRight, Check } from "lucide-react";
+import { Container, CtaBand, Faq, MarketingShell, Pill, PrimaryCta, SecondaryCta, SectionHead } from "@/components/marketing/site";
+import { DEMO_TACOS, MenuDemo } from "@/components/marketing/MenuDemo";
+import { PER_MENU, PRO, fmtUsd } from "@/lib/billing/plans";
+import appReview from "../../public/product/app-review.png";
+import appPhone from "../../public/product/app-phone.png";
 
-const DEMO = [
-  { name: "Street Tacos (3)", price: "11.50", tag: "Protein" },
-  { name: "Classic Burrito", price: "12.75", tag: "Protein · Add-ons" },
-  { name: "Chips & Salsa", price: "3.50 / 6.00", tag: "Sm · Lg" },
-  { name: "Horchata", price: "3.75 / 4.95", tag: "16oz · 24oz" },
-  { name: "House Margarita", price: "10.00", tag: "Flavors · up to 2" },
+const STATS = [
+  { value: "~20s", label: "to read a menu page" },
+  { value: "3", label: "POS formats: Square, Clover, Toast" },
+  { value: "4–20 hrs", label: "of hand entry it replaces" },
+  { value: "$49", label: "per menu, paid at download" },
 ];
 
 const STEPS = [
-  { icon: Camera, title: "Snap or upload", body: "Photos, PDF, spreadsheet, or the old POS export. Multiple pages are fine." },
-  { icon: Wand2, title: "We build it", body: "Categories, items, sizes, modifiers with min/max, tax hints. In about a minute." },
-  { icon: ScanLine, title: "Fix what's flagged", body: "Unsure items are marked. Tap to edit, right on your phone." },
-  { icon: FileSpreadsheet, title: "Import", body: "Download a file formatted for Square, Clover, or Toast." },
+  { n: "01", title: "Snap or upload", body: "Phone photos of each page, a PDF, a spreadsheet, or the old POS's export. Multi-page is fine." },
+  { n: "02", title: "Review in minutes", body: "Categories, items, sizes and modifier groups come back structured. Anything uncertain is flagged." },
+  { n: "03", title: "Import to the POS", body: "Download a file formatted for Square, Clover or Toast and upload it. No retyping." },
 ];
+
+const FAQ = [
+  ["What can I upload?", "Photos (JPG, PNG), PDFs, CSV or Excel files, and exports from another POS. Several pages at once is fine."],
+  ["How accurate is it?", "On our test menu it read every item, price and modifier group. Real menus vary, so anything it's unsure about is flagged for you to check before you export."],
+  ["Which POS systems?", "Square, Clover and Toast today. Heartland, SpotOn and SkyTab are next."],
+  ["When do I pay?", "Only when you download. Build and review free, then pay $49 to unlock the import file for that menu."],
+  ["Can it read DoorDash or Uber Eats links?", "No. Those sites don't allow automated access. Screenshot the menu and upload the screenshots instead."],
+] as const;
+
+function Chip({ children, on }: { children: ReactNode; on?: boolean }) {
+  return (
+    <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[12px] ${on ? "border-ink bg-ink text-white" : "border-line bg-surface"}`}>
+      {on && <Check className="size-3" />}
+      {children}
+    </span>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex min-h-dvh flex-col overflow-x-hidden">
-      <SiteHeader />
-
-      <main className="mx-auto w-full max-w-6xl flex-1 px-5 sm:px-8">
-        <section className="grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
-          <div className="animate-rise">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-sm font-semibold text-brand-ink">
-              <Sparkles className="size-4" /> For owners, agents and resellers
-            </span>
-            <h1 className="mt-5 text-[42px] font-extrabold leading-[1.05] tracking-tight sm:text-6xl">
-              Any menu.
-              <br />
-              Any POS.
-              <br />
-              <span className="text-brand">In minutes.</span>
+    <MarketingShell>
+      {/* Hero */}
+      <section className="relative border-b border-line">
+        <div className="bg-grid absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" aria-hidden />
+        <Container className="relative pb-16 pt-14 sm:pt-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="animate-rise">
+              <Pill>Built for ISOs, agents & POS resellers</Pill>
+            </div>
+            <h1 className="mt-6 animate-rise text-[44px] font-semibold leading-[1.02] tracking-[-0.035em] [animation-delay:60ms] sm:text-[72px]">
+              Any menu into any POS.{" "}
+              <span className="font-serif font-normal italic tracking-[-0.01em] text-ink/90">In minutes.</span>
             </h1>
-            <p className="mt-5 max-w-md text-lg text-muted">Stop retyping menus. Snap the one the restaurant has and get a file the POS will import.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/build"
-                className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-brand px-7 text-[17px] font-semibold text-white shadow-[0_10px_30px_-10px_rgba(255,90,31,0.7)] transition hover:bg-brand-ink active:scale-[0.98]"
-              >
-                Build a menu <ArrowRight className="size-5" />
-              </Link>
-              <Link href="/pricing" className="inline-flex h-14 items-center justify-center rounded-2xl px-5 font-semibold ring-1 ring-line hover:bg-surface">
-                $49 a menu · See pricing
-              </Link>
-              <span className="hidden h-14 items-center justify-center gap-3 text-sm text-muted lg:inline-flex">
-                <span className="font-semibold text-ink">Square</span>·<span className="font-semibold text-ink">Clover</span>·
-                <span className="font-semibold text-ink">Toast</span>
-              </span>
+            <p className="mx-auto mt-6 max-w-xl animate-rise text-[18px] leading-relaxed text-muted [animation-delay:120ms]">
+              Snap the menu the restaurant already has. Get an import file for Square, Clover or Toast, without typing a single item.
+            </p>
+            <div className="mt-9 flex animate-rise flex-col justify-center gap-3 [animation-delay:180ms] sm:flex-row">
+              <PrimaryCta>Build a menu</PrimaryCta>
+              <SecondaryCta href="#how">See how it works</SecondaryCta>
             </div>
+            <p className="mt-4 text-[13px] text-muted">Build and review free. Pay when you download.</p>
           </div>
 
-          {/* Animated demo: a menu page gets scanned into structured rows. */}
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none" aria-hidden>
-            <div className="absolute -inset-6 -z-10 rounded-[48px] bg-gradient-to-br from-brand/20 via-brand-soft to-transparent blur-2xl" />
-            <div className="grid grid-cols-[0.8fr_1.2fr] gap-3 sm:gap-4">
-              <div className="relative overflow-hidden rounded-3xl bg-[#fffaf0] p-4 shadow-xl ring-1 ring-line">
-                <p className="text-center font-serif text-[11px] font-bold tracking-widest">RIVERBEND</p>
-                <div className="mt-3 space-y-2.5">
-                  {Array.from({ length: 11 }).map((_, i) => (
-                    <div key={i} className="flex justify-between gap-2">
-                      <span className="h-1.5 rounded-full bg-ink/25" style={{ width: `${40 + ((i * 29) % 45)}%` }} />
-                      <span className="h-1.5 w-5 rounded-full bg-ink/30" />
-                    </div>
-                  ))}
-                </div>
-                <div className="absolute inset-x-0 h-12 animate-scan bg-gradient-to-b from-transparent via-brand/25 to-transparent">
-                  <div className="absolute inset-x-0 top-1/2 h-0.5 bg-brand shadow-[0_0_10px_2px_rgba(255,90,31,0.6)]" />
-                </div>
-              </div>
-              <div className="rounded-3xl bg-surface p-3 shadow-xl ring-1 ring-line sm:p-4">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wide text-muted">Clover import</span>
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">READY</span>
-                </div>
-                <ul className="space-y-1.5">
-                  {DEMO.map((d, i) => (
-                    <li key={d.name} className="animate-rise rounded-xl bg-bg px-2.5 py-2" style={{ animationDelay: `${300 + i * 180}ms` }}>
-                      <div className="flex items-center justify-between gap-2 text-[13px] font-semibold">
-                        <span className="truncate">{d.name}</span>
-                        <span className="shrink-0 tabular-nums">{d.price}</span>
-                      </div>
-                      <div className="text-[11px] text-muted">{d.tag}</div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+          {/* Product shot */}
+          {/* Phones: show the phone UI, legible at this size */}
+          <div className="mx-auto mt-12 w-[270px] animate-rise overflow-hidden rounded-[34px] border-[7px] border-ink bg-ink shadow-[0_40px_80px_-30px_rgba(0,0,0,0.45)] [animation-delay:240ms] md:hidden">
+            <Image src={appPhone} alt="Editing an item on a phone" priority sizes="270px" className="w-full rounded-[27px]" />
           </div>
-        </section>
-
-        <section className="pb-16">
-          <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {STEPS.map(({ icon: Icon, title, body }, i) => (
-              <li key={title} className="animate-rise rounded-3xl bg-surface p-5 ring-1 ring-line" style={{ animationDelay: `${i * 80}ms` }}>
-                <span className="grid size-11 place-items-center rounded-2xl bg-brand-soft text-brand">
-                  <Icon className="size-5" />
+          <div className="relative mx-auto mt-16 hidden max-w-5xl animate-rise [animation-delay:240ms] md:block">
+            <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-[0_1px_2px_rgba(0,0,0,0.04),0_40px_80px_-40px_rgba(0,0,0,0.35)]">
+              <div className="flex items-center gap-1.5 border-b border-line bg-bg px-4 py-3">
+                <span className="size-2.5 rounded-full bg-line" />
+                <span className="size-2.5 rounded-full bg-line" />
+                <span className="size-2.5 rounded-full bg-line" />
+                <span className="ml-3 hidden rounded-md border border-line bg-surface px-3 py-0.5 font-mono text-[11px] text-muted sm:block">
+                  fastposmenu.com/build
                 </span>
-                <h2 className="mt-4 font-bold">{title}</h2>
-                <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
-      </main>
+              </div>
+              <Image src={appReview} alt="Fast POS Menu review screen with items, categories and modifier groups" priority sizes="(max-width: 1100px) 100vw, 1024px" className="w-full" />
+            </div>
+            <div className="absolute -bottom-10 -right-2 hidden w-[230px] overflow-hidden rounded-[28px] border-[6px] border-ink bg-ink shadow-[0_40px_80px_-30px_rgba(0,0,0,0.45)] md:block lg:-right-10">
+              <Image src={appPhone} alt="Editing an item on a phone" sizes="230px" className="w-full rounded-[22px]" />
+            </div>
+          </div>
+        </Container>
+      </section>
 
-      <SiteFooter />
-    </div>
+      {/* Exports-to strip + stats */}
+      <section className="border-b border-line bg-surface">
+        <Container className="flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Exports import files for</p>
+          <div className="flex items-center gap-8 font-display text-[20px] font-semibold tracking-[-0.02em] text-ink/70 sm:gap-12">
+            <span>Square</span>
+            <span>Clover</span>
+            <span>Toast</span>
+          </div>
+        </Container>
+        <div className="border-t border-line">
+          <Container className="py-0">
+            <div className="grid grid-cols-2 gap-px bg-line lg:grid-cols-4">
+              {STATS.map((s) => (
+                <div key={s.label} className="bg-surface py-8 pr-4 sm:pr-6 [&:nth-child(2n)]:pl-5 lg:pl-6 lg:[&:first-child]:pl-0">
+                  <div className="font-display text-[34px] font-semibold tracking-[-0.03em]">{s.value}</div>
+                  <div className="mt-1 text-[14px] text-muted">{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="scroll-mt-20">
+        <Container className="py-24">
+          <SectionHead eyebrow="How it works" title="From paper menu to import file." sub="Three steps. Most menus take a few minutes, start to finish." />
+          <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+            <ol className="space-y-0 border-t border-line">
+              {STEPS.map((s) => (
+                <li key={s.n} className="grid grid-cols-[3.5rem_1fr] gap-2 border-b border-line py-7">
+                  <span className="font-mono text-[13px] text-brand">{s.n}</span>
+                  <div>
+                    <h3 className="text-[20px] font-semibold tracking-[-0.02em]">{s.title}</h3>
+                    <p className="mt-2 leading-relaxed text-muted">{s.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <MenuDemo title="Riverbend" label="Clover inventory workbook" rows={DEMO_TACOS} />
+          </div>
+        </Container>
+      </section>
+
+      {/* Feature grid */}
+      <section className="border-y border-line bg-surface">
+        <Container className="py-24">
+          <SectionHead eyebrow="What it handles" title="The fiddly parts, done right." sub="Menus aren't lists. Sizes, required choices and upcharges are what make hand entry slow." />
+          <div className="mt-14 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-3">
+            <div className="bg-surface p-7 md:col-span-2">
+              <h3 className="text-[18px] font-semibold">Modifier groups with real rules</h3>
+              <p className="mt-2 max-w-md text-muted">&quot;Choose one protein&quot; becomes a required group, pick 1. &quot;Add-ons&quot; stays optional with upcharges.</p>
+              <div className="mt-6 rounded-lg border border-line bg-bg p-4">
+                <div className="flex items-center justify-between text-[13px]">
+                  <span className="font-medium">Pick Your Protein</span>
+                  <span className="font-mono text-[11px] text-muted">REQUIRED · PICK 1</span>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <Chip on>Carne Asada +2.00</Chip>
+                  <Chip>Al Pastor</Chip>
+                  <Chip>Pollo Asado</Chip>
+                  <Chip>Carnitas</Chip>
+                  <Chip>Grilled Veggies</Chip>
+                </div>
+              </div>
+            </div>
+            <div className="bg-surface p-7">
+              <h3 className="text-[18px] font-semibold">Sizes and variants</h3>
+              <p className="mt-2 text-muted">&quot;Sm 3.50 / Lg 6.00&quot; becomes two priced sizes.</p>
+              <div className="mt-6 divide-y divide-line rounded-lg border border-line font-mono text-[13px]">
+                <div className="flex justify-between px-3 py-2"><span>Small</span><span>3.50</span></div>
+                <div className="flex justify-between px-3 py-2"><span>Large</span><span>6.00</span></div>
+              </div>
+            </div>
+            <div className="bg-surface p-7">
+              <h3 className="text-[18px] font-semibold">Flags what it isn&apos;t sure of</h3>
+              <p className="mt-2 text-muted">Blurry prices and &quot;MP&quot; items are marked so you check them first.</p>
+              <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-[13px] text-amber-950">
+                <span className="font-medium">Shrimp Tacos</span> · price shows MP
+              </div>
+            </div>
+            <div className="bg-surface p-7">
+              <h3 className="text-[18px] font-semibold">Any input</h3>
+              <p className="mt-2 text-muted">Photos, PDFs, spreadsheets and old-POS exports. Clean spreadsheets are read instantly.</p>
+              <div className="mt-6 flex flex-wrap gap-1.5 font-mono text-[11px]">
+                {["JPG", "PNG", "PDF", "CSV", "XLSX"].map((t) => (
+                  <span key={t} className="rounded border border-line px-2 py-1">{t}</span>
+                ))}
+              </div>
+            </div>
+            <div className="bg-surface p-7">
+              <h3 className="text-[18px] font-semibold">Made for the phone</h3>
+              <p className="mt-2 text-muted">Take photos at the table, fix items with a tap, export before you leave the install.</p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ISOs */}
+      <section>
+        <Container className="grid gap-12 py-24 lg:grid-cols-2 lg:items-center">
+          <div>
+            <SectionHead
+              eyebrow="For ISOs and agents"
+              title="Board the restaurant. Skip the menu build."
+              sub="Menu builds are the hours nobody bills for and the reason go-lives slip. Start every install from a finished draft in the right format."
+            />
+            <Link href="/for-isos" className="mt-8 inline-flex items-center gap-1.5 font-medium hover:underline">
+              Fast POS Menu for ISOs <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-line bg-surface">
+            <div className="grid grid-cols-[1.4fr_1fr_1fr] border-b border-line bg-bg px-5 py-3 font-mono text-[11px] uppercase tracking-wider text-muted">
+              <span>Menu build</span>
+              <span>Time</span>
+              <span>Cost</span>
+            </div>
+            {[
+              ["By hand", "4–20 hrs", "Your team"],
+              ["POS vendor service", "Days", "~$150/hr*"],
+              ["Freelancer", "1–3 days", "$50–300"],
+            ].map(([a, b, c]) => (
+              <div key={a} className="grid grid-cols-[1.4fr_1fr_1fr] border-b border-line px-5 py-4 text-[15px]">
+                <span>{a}</span>
+                <span className="text-muted">{b}</span>
+                <span className="text-muted">{c}</span>
+              </div>
+            ))}
+            <div className="grid grid-cols-[1.4fr_1fr_1fr] bg-ink px-5 py-4 text-[15px] text-white">
+              <span className="font-medium">Fast POS Menu</span>
+              <span>Minutes</span>
+              <span>$49</span>
+            </div>
+            <p className="px-5 py-3 text-[12px] text-muted">*Toast professional services rate. Times and costs are estimates.</p>
+          </div>
+        </Container>
+      </section>
+
+      {/* Pricing preview */}
+      <section className="border-y border-line bg-surface">
+        <Container className="py-24">
+          <SectionHead eyebrow="Pricing" title="Pay per menu. Or go monthly." center />
+          <div className="mx-auto mt-12 grid max-w-3xl gap-4 md:grid-cols-2">
+            <div className="rounded-xl border border-line p-7">
+              <p className="text-[15px] font-medium">{PER_MENU.name}</p>
+              <p className="mt-4 font-display text-[44px] font-semibold tracking-[-0.03em]">
+                {fmtUsd(PER_MENU.priceCents)}
+                <span className="ml-1 text-[15px] font-normal tracking-normal text-muted">/ menu</span>
+              </p>
+              <p className="mt-2 text-muted">{PER_MENU.blurb}</p>
+            </div>
+            <div className="rounded-xl bg-ink p-7 text-white">
+              <p className="flex items-center justify-between text-[15px] font-medium">
+                {PRO.name}
+                <span className="rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70">Soon</span>
+              </p>
+              <p className="mt-4 font-display text-[44px] font-semibold tracking-[-0.03em]">
+                {fmtUsd(PRO.priceCents)}
+                <span className="ml-1 text-[15px] font-normal tracking-normal text-white/60">/ month</span>
+              </p>
+              <p className="mt-2 text-white/65">{PRO.builds} menus a month, about $15 each.</p>
+            </div>
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/pricing" className="inline-flex items-center gap-1.5 font-medium hover:underline">
+              Full pricing <ArrowRight className="size-4" />
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* FAQ */}
+      <section>
+        <Container className="grid gap-10 py-24 lg:grid-cols-[1fr_1.6fr]">
+          <SectionHead eyebrow="FAQ" title="Questions, answered." />
+          <Faq items={FAQ} />
+        </Container>
+      </section>
+
+      <CtaBand title="Your next menu build takes minutes." sub="Snap it, check it, import it. Pay only when you download." />
+    </MarketingShell>
   );
 }
