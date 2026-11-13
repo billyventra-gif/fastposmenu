@@ -96,6 +96,10 @@ const FAQ = [
     "You review every item before you pay. Anything it's unsure of is flagged so you know where to look, and edits take seconds on a phone.",
   ],
   [
+    "The merchant wants new prices with the new POS.",
+    "Use Adjust prices before you download: raise or lower everything (or one category) by a percent or a dollar amount, include modifiers or not, and round to the nickel, quarter, dollar or .99. You see a preview first, and you can undo it.",
+  ],
+  [
     "Will the file import clean?",
     "Each file follows that POS's published import layout: Clover's inventory workbook, Square's item library sheet, and Toast's bulk-import sheet plus a menu-build workbook. Formats are in beta while we confirm them against real accounts, so check the import preview. If something doesn't go in, tell us and we'll fix it.",
   ],

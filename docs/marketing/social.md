@@ -273,6 +273,15 @@ Anything in [brackets] gets filled with real numbers. If a number isn't real yet
 >
 > Start every install from a finished draft in the right import format and the variance mostly goes away. Quote the install, not the hours.
 
+**Feature post (use for Dec 10 if nothing newer ships): Adjust prices**
+> Half the POS switches I see come with a price increase. Owner says "while we're at it, bump everything 5%."
+>
+> That used to mean editing 150 prices by hand after the menu was built.
+>
+> Now, before you download: Adjust prices → +5% → round to .99 → preview → done. One category or the whole menu, with or without modifiers. Undo if they change their mind.
+
+Short video V12: sample cafe menu, +5% on Coffee only, round to $0.25, show the preview, then undo. 20 sec.
+
 **Thu Dec 10 · Feature drop**: write when the build session ships something (Pro, a new POS, own-site link import). Don't pre-announce.
 
 **Fri Dec 11 · Lessons from 3 weeks**

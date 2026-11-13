@@ -57,6 +57,7 @@ Don't use `font-bold`/`font-extrabold` on marketing pages. Semibold is the heavi
 - **Before/after** stays the core story: paper menu → structured rows → import file.
 - **Sample menus only** (`docs/marketing/sample-menus.md`). Never a real merchant's menu.
 - Photos: real counters, real printed menus, natural light, shot on a phone. No stock handshakes, robots or glowing brains. No illustrations.
+- **Pending decision: official POS logos.** The build session reports Billy wants official Square/Clover/Toast logos in "exports to / works with" spots, via `src/components/pos-logo.tsx` (renders plain text until logo files are added to `/public/logos/`). Until Billy confirms it directly and each company's brand/trademark guidelines are checked (some limit logo use to partners), the rule below stands and no logo files get added. If approved: official files only, never redrawn or recolored, never in a lockup with our logo, trademark disclaimer kept, and no partner/certified/official wording.
 - POS names appear as plain text on marketing pages. In the app, `PosMark` letter badges are all neutral black (no per-vendor colors). Never vendor logos or vendor brand colors used as a logo.
 
 ## Social and ad templates

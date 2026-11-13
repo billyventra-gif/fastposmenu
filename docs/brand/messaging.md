@@ -31,6 +31,7 @@ Fast POS Menu takes the menu the restaurant already has (phone photos, a PDF, a 
 **Claim:** Nothing goes into the POS that you didn't see.
 **Say:** "Review and fix on your phone." "Unsure items are flagged." "Pay only when you download."
 **Proof:** Mandatory review screen with low-confidence flags; build and review before paying.
+**Feature to mention:** *Adjust prices*. Raise or lower the whole menu or one category by % or $, optionally including modifiers, rounded to $0.05 / $0.25 / $1 / .99, with a preview and undo. Pitch it as "new POS, new prices, one tap" for switch deals. Code does the math, not AI; say so if asked.
 
 ### 5. Built by payments people, for payments people
 **Claim:** We understand boarding, not just menus.
