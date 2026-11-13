@@ -23,7 +23,7 @@ export default function PrivacyPage() {
           <b>Your menu draft.</b> Saved in your own browser so you don&apos;t lose work. Clearing your browser data deletes it.
         </li>
         <li>
-          <b>Payment details.</b> Handled by Stripe. We never see your full card number. We receive a receipt record (amount, date, email if given).
+          <b>Payment details.</b> Handled by Stripe. We never see your full card number. We receive a receipt record (amount, date, email if given). Receipts are sent by Stripe on behalf of {SITE.company}.
         </li>
         <li>
           <b>Usage data.</b> Basic, cookie-free page analytics (Vercel Web Analytics) and server logs (time, page, rough location, errors) to keep

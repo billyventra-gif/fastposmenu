@@ -1,5 +1,6 @@
 "use client";
 
+import { saveProSession } from "@/lib/billing/device";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, RotateCcw } from "lucide-react";
@@ -61,13 +62,18 @@ export default function Builder() {
     const m = loadMeta();
     const params = new URLSearchParams(window.location.search);
     const paid = params.get("paid");
+    const pro = params.get("pro");
+    if (pro?.startsWith("cs_")) {
+      saveProSession(pro);
+      setNotice("You're on Pro. Downloads now count against your monthly builds.");
+    }
     if (paid?.startsWith("cs_")) {
       m.paidSessionId = paid;
       setOpenExport(true);
     } else if (params.get("canceled")) {
       setNotice("Checkout canceled. Your menu is still here.");
     }
-    if (paid || params.get("canceled")) window.history.replaceState(null, "", "/build");
+    if (paid || pro || params.get("canceled")) window.history.replaceState(null, "", "/build");
     localStorage.setItem(META_KEY, JSON.stringify(m));
     setMeta(m);
     setLoaded(true);

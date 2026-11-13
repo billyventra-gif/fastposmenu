@@ -128,6 +128,12 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-line">
         <div className="mx-auto max-w-6xl px-5 py-6 text-[12px] leading-relaxed text-muted sm:px-8">
+          <span className="mb-1 block text-[13px] text-ink/80">
+            {SITE.name} by{" "}
+            <a href={SITE.companyUrl} className="font-medium underline-offset-2 hover:underline">
+              {SITE.company}
+            </a>
+          </span>
           © 2026 {SITE.company}. Square, Clover and Toast are trademarks of their owners. Fast POS Menu is independent and not affiliated with or
           endorsed by them.
         </div>

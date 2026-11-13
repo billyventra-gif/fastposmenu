@@ -1,35 +1,59 @@
 import "server-only";
-import { billingEnabled, DRAFT_ID, stripe } from "./stripe";
+import type Stripe from "stripe";
+import { PRO } from "./plans";
+import { consumeBuild, type QuotaMeta } from "./quota";
+import { billingEnabled, CHECKOUT_SESSION, DRAFT_ID, proEnabled, stripe } from "./stripe";
 
 /**
- * Pay-per-menu, no database:
- *  - Each menu draft has a random draftId (made in the browser).
- *  - Checkout puts the draftId in the Stripe session metadata.
- *  - On export we ask Stripe: is this session paid, and is it for this draftId?
- * A paid draft can be re-exported as often as needed.
- *
- * Pro subscriptions (monthly build credits) need accounts + a database. Not wired yet.
+ * No database. Two ways to unlock a download:
+ *  1. Per menu: a paid one-time Checkout Session whose metadata.draftId matches this draft.
+ *  2. Pro: the subscription Checkout Session id (kept in the subscriber's browser). We ask Stripe
+ *     if the subscription is active and count builds in its metadata (see quota.ts).
+ * A paid or already-counted draft can be re-downloaded as often as needed.
  */
 
-export type Entitlement = { allowed: true; paidSessionId?: string } | { allowed: false; reason: string };
+export type ProStatus = { used: number; limit: number; customer: string };
+export type Entitlement =
+  | { allowed: true; paidSessionId?: string; pro?: ProStatus }
+  | { allowed: false; reason: string; pro?: ProStatus };
 
-// Extraction is free while billing is off; when it's on, the beta password gate + Stripe
-// on export are the controls. Add per-IP rate limiting before opening extraction publicly.
 export async function canExtract(): Promise<Entitlement> {
   return { allowed: true };
 }
 
-export async function canExport(draftId: unknown, paidSessionId: unknown): Promise<Entitlement> {
+/** Look up an active Pro subscription from its Checkout Session id. */
+export async function proFromSession(proSessionId: unknown): Promise<{ sub: Stripe.Subscription; customer: string } | null> {
+  if (!proEnabled() || typeof proSessionId !== "string" || !CHECKOUT_SESSION.test(proSessionId)) return null;
+  const s = await stripe().checkout.sessions.retrieve(proSessionId, { expand: ["subscription"] });
+  if (s.mode !== "subscription" || !s.subscription || typeof s.subscription === "string") return null;
+  const sub = s.subscription;
+  if (sub.status !== "active" && sub.status !== "trialing") return null;
+  const customer = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
+  return { sub, customer };
+}
+
+async function paidForDraft(draftId: string, paidSessionId: unknown): Promise<boolean> {
+  if (typeof paidSessionId !== "string" || !CHECKOUT_SESSION.test(paidSessionId)) return false;
+  const s = await stripe().checkout.sessions.retrieve(paidSessionId);
+  return s.mode === "payment" && (s.payment_status === "paid" || s.payment_status === "no_payment_required") && s.metadata?.draftId === draftId;
+}
+
+export async function canExport(draftId: unknown, paidSessionId: unknown, proSessionId?: unknown): Promise<Entitlement> {
   if (!billingEnabled()) return { allowed: true };
   if (typeof draftId !== "string" || !DRAFT_ID.test(draftId)) return { allowed: false, reason: "Missing menu ID. Refresh and try again." };
-  if (typeof paidSessionId !== "string" || !paidSessionId.startsWith("cs_")) return { allowed: false, reason: "payment_required" };
   try {
-    const s = await stripe().checkout.sessions.retrieve(paidSessionId);
-    if (s.payment_status !== "paid" && s.payment_status !== "no_payment_required") return { allowed: false, reason: "payment_required" };
-    if (s.metadata?.draftId !== draftId) return { allowed: false, reason: "payment_required" };
-    return { allowed: true, paidSessionId };
+    if (await paidForDraft(draftId, paidSessionId)) return { allowed: true, paidSessionId: paidSessionId as string };
+
+    const pro = await proFromSession(proSessionId);
+    if (!pro) return { allowed: false, reason: "payment_required" };
+    const periodStart = pro.sub.items.data[0]?.current_period_start ?? 0;
+    const q = consumeBuild(pro.sub.metadata as QuotaMeta, periodStart, draftId, PRO.builds);
+    const status = { used: q.used, limit: PRO.builds, customer: pro.customer };
+    if (!q.allowed) return { allowed: false, reason: "pro_limit", pro: status };
+    if (q.changed) await stripe().subscriptions.update(pro.sub.id, { metadata: { ...q.next } });
+    return { allowed: true, pro: status };
   } catch (e) {
-    console.error("[billing] session lookup failed", e);
+    console.error("[billing] lookup failed", e);
     return { allowed: false, reason: "Couldn't confirm payment. Try again in a minute." };
   }
 }

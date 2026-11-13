@@ -5,7 +5,7 @@ Owner key: **B** = Billy (only you can do it), **C** = Claude build session, **M
 ## Done
 - [x] App: upload → AI read → review/edit (mobile + tablet) → export for Square, Clover, Toast
 - [x] Live on Vercel (personal team), auto-deploys from `main`
-- [x] Pricing page ($49/menu; Pro $149/mo "coming soon") + Stripe pay-per-menu checkout with promo codes
+- [x] Pricing page ($49/menu; Pro $149/mo, live once STRIPE_PRICE_SUBSCRIPTION is set) + Stripe pay-per-menu checkout with promo codes
 - [x] Terms, Privacy, Refund pages (drafts; see legal review below)
 - [x] SEO plumbing: sitemap, robots, titles/descriptions, social share image
 - [x] Vercel Web Analytics component (turn on in dashboard)
@@ -17,6 +17,13 @@ Owner key: **B** = Billy (only you can do it), **C** = Claude build session, **M
 - [ ] **B** Buy `fastposmenu.com` (~$12/yr; `.food` is taken). Tell Claude "buy it" and it can be done through your Vercel account, or buy it yourself.
 - [ ] **B** Create the support inbox `hello@fastposmenu.com` (Google Workspace ~$7/mo, or free forwarding).
 - [ ] **B** Stripe account under Code 85 Labs (not SmarterSwipe): business details, bank, support email, statement descriptor `FASTPOSMENU`.
+  - Test mode first. Products → create **Fast POS Menu: menu build** ($49 one-time) and **Fast POS Menu Pro** ($149/month recurring). Copy each Price ID.
+  - Developers → Webhooks → add endpoint `<site>/api/stripe/webhook` with events: checkout.session.completed, customer.subscription.created/updated/deleted, invoice.paid, invoice.payment_failed, charge.refunded. Copy the signing secret.
+  - Settings → Billing → Customer portal: turn on (update card, invoices, cancel at period end).
+  - Settings → Emails: send receipts from billing@ (once the Code 85 inbox exists).
+  - Vercel env (Production): `STRIPE_SECRET_KEY` (sk_test_ first), `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_PER_MENU`, `STRIPE_PRICE_SUBSCRIPTION`, `BILLING_ENABLED=true`. Redeploy.
+  - Set `NEXT_PUBLIC_SUPPORT_EMAIL` / `NEXT_PUBLIC_BILLING_EMAIL` / `NEXT_PUBLIC_COMPANY_URL` once the Code 85 domain + Workspace are live (defaults: support@ / billing@code85labs.com, code85.app).
+  - Known limit: no accounts yet, so Pro is tied to the device/browser that subscribed. Lost device → subscriber emails support; we look them up in Stripe.
 - [ ] **B** Vercel env (Settings → Environment Variables), Production + Preview, then Redeploy:
   - `STRIPE_SECRET_KEY` = `sk_test_...` (Sensitive), `BILLING_ENABLED` = `true`
   - Test a purchase with card 4242 4242 4242 4242

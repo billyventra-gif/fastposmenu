@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Check } from "lucide-react";
 import { PER_MENU, PRO, fmtUsd } from "@/lib/billing/plans";
+import { proEnabled } from "@/lib/billing/stripe";
+import ProCta from "@/components/ProCta";
 import { Container, CtaBand, Faq, MarketingShell, Pill, PrimaryCta, SectionHead } from "@/components/marketing/site";
 
 export const metadata: Metadata = {
@@ -28,6 +30,7 @@ const COMPARE: [string, string, string][] = [
 ];
 
 export default function PricingPage() {
+  const pro = proEnabled();
   return (
     <MarketingShell>
       <section className="relative border-b border-line">
@@ -64,9 +67,11 @@ export default function PricingPage() {
             <div className="flex flex-col rounded-xl bg-ink p-8 text-white">
               <p className="flex items-center justify-between text-[15px] font-medium">
                 {PRO.name}
-                <span className="rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70">
-                  Coming soon
-                </span>
+                {!pro && (
+                  <span className="rounded border border-white/20 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/70">
+                    Coming soon
+                  </span>
+                )}
               </p>
               <p className="mt-5 font-display text-[56px] font-semibold leading-none tracking-[-0.04em]">
                 {fmtUsd(PRO.priceCents)}
@@ -74,9 +79,13 @@ export default function PricingPage() {
               </p>
               <p className="mt-4 text-white/65">{PRO.blurb}</p>
               <div className="mt-7">
-                <span className="inline-flex h-12 items-center rounded-lg border border-white/15 px-5 text-[15px] font-medium text-white/60">
-                  Join the list at launch
-                </span>
+                {pro ? (
+                  <ProCta />
+                ) : (
+                  <span className="inline-flex h-12 items-center rounded-lg border border-white/15 px-5 text-[15px] font-medium text-white/60">
+                    Join the list at launch
+                  </span>
+                )}
               </div>
               <ul className="mt-8 space-y-3 border-t border-white/10 pt-7 text-[15px]">
                 {PRO.features.map((f) => (

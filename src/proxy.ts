@@ -7,6 +7,8 @@ import { NextResponse, type NextRequest } from "next/server";
  * - Neither, in production: blocked.
  */
 export function proxy(req: NextRequest) {
+  // Stripe can't send a password; the webhook checks Stripe's signature instead.
+  if (req.nextUrl.pathname === "/api/stripe/webhook") return NextResponse.next();
   const password = process.env.SITE_PASSWORD;
   if (!password && process.env.PUBLIC_APP === "true") return NextResponse.next();
   if (!password) {

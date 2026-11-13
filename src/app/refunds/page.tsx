@@ -22,7 +22,11 @@ export default function RefundsPage() {
       </p>
 
       <h2>Subscriptions</h2>
-      <p>Monthly plans can be canceled anytime and stop at the end of the current billing period. Unused builds don&apos;t roll over.</p>
+      <p>
+        Pro can be canceled anytime from Manage billing and stops at the end of the current billing period. Unused builds don&apos;t roll over.
+        Receipts and billing questions:{" "}
+        <a href={`mailto:${SITE.billingEmail}`} className="underline">{SITE.billingEmail}</a>.
+      </p>
     </LegalPage>
   );
 }

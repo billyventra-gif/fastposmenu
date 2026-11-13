@@ -35,7 +35,11 @@ export default function TermsPage() {
 
       <h2>Payment</h2>
       <p>
-        Prices are shown before you pay. Per-menu purchases unlock the import file for that menu. Payments are processed by Stripe. See our{" "}
+        {SITE.company} is the seller, and charges appear from {SITE.company}. Prices are shown before you pay. Per-menu purchases unlock the
+        import file for that menu. Pro is a monthly subscription that includes a set number of menu builds per billing period; extra builds
+        are charged per build at the price shown, and unused builds don&apos;t roll over. You can cancel Pro anytime from Manage billing; it
+        stays active until the end of the period you&apos;ve paid for. Payments are processed by Stripe. Billing questions:{" "}
+        <a href={`mailto:${SITE.billingEmail}`} className="underline">{SITE.billingEmail}</a>. See our{" "}
         <a href="/refunds" className="underline">Refund Policy</a>.
       </p>
 

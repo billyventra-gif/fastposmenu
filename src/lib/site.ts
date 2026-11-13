@@ -1,15 +1,20 @@
 import { GUIDES } from "@/content/guides";
 
 /**
- * Site-wide settings. Set these in Vercel once the domain and inbox exist:
- *   NEXT_PUBLIC_SITE_URL=https://fastposmenu.com
- *   NEXT_PUBLIC_SUPPORT_EMAIL=hello@fastposmenu.com
+ * Site-wide settings. Fast POS Menu is a product of Code 85 Labs, which is also the seller.
+ * Domains and inboxes aren't final, so all of these come from Vercel env vars:
+ *   NEXT_PUBLIC_SITE_URL       app domain (fastposmenu.com planned; .food still open)
+ *   NEXT_PUBLIC_COMPANY_URL    Code 85 Labs site
+ *   NEXT_PUBLIC_SUPPORT_EMAIL  support inbox (planned support@code85labs.com)
+ *   NEXT_PUBLIC_BILLING_EMAIL  receipts/billing inbox (planned billing@code85labs.com)
  */
 export const SITE = {
   name: "Fast POS Menu",
   company: "Code 85 Labs",
+  companyUrl: (process.env.NEXT_PUBLIC_COMPANY_URL || "https://code85.app").replace(/\/$/, ""),
   url: (process.env.NEXT_PUBLIC_SITE_URL || "https://fastposmenu-billyventra-9501s-projects.vercel.app").replace(/\/$/, ""),
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "hello@fastposmenu.com",
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "support@code85labs.com",
+  billingEmail: process.env.NEXT_PUBLIC_BILLING_EMAIL || "billing@code85labs.com",
   tagline: "Any restaurant menu, into any POS, in minutes.",
   description:
     "Turn menu photos, PDFs or old-POS exports into a Square, Clover or Toast import file in minutes. Built for ISOs, agents and POS resellers. $49 a menu.",

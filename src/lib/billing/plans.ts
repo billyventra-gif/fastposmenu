@@ -26,7 +26,7 @@ export const PRO = {
   overageCents: 1500,
   blurb: "For agents and resellers boarding restaurants every month.",
   features: ["10 menu builds a month", "About $15 a menu", "Extra builds $15 each", "Every POS we support", "Priority help"],
-  available: false, // needs accounts (Supabase) to track monthly builds
+  // Live when STRIPE_PRICE_SUBSCRIPTION is set (see proEnabled in stripe.ts). Builds counted in Stripe metadata.
 } as const;
 
 export const fmtUsd = (cents: number) => `$${(cents / 100).toFixed(cents % 100 ? 2 : 0)}`;

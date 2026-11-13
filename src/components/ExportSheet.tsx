@@ -5,12 +5,15 @@ import { AlertTriangle, Check, CheckCircle2, Download, FileJson, FileSpreadsheet
 import type { Menu } from "@/lib/menu/schema";
 import type { Issue } from "@/lib/menu/normalize";
 import { POS_INFO } from "@/lib/export/registry";
-import { PER_MENU, fmtUsd } from "@/lib/billing/plans";
+import { PER_MENU, PRO, fmtUsd } from "@/lib/billing/plans";
+import { openBillingPortal, readProSession } from "@/lib/billing/device";
+import { SITE } from "@/lib/site";
 import { readUtm } from "./UtmCapture";
 import { Button, Sheet, cx } from "./ui";
 
 type ExportFile = { filename: string; mime: string; base64: string };
-type ExportResponse = { issues: Issue[]; steps: string[]; files: ExportFile[]; error?: string; needsPayment?: boolean };
+type ProUsage = { used: number; limit: number };
+type ExportResponse = { issues: Issue[]; steps: string[]; files: ExportFile[]; error?: string; needsPayment?: boolean; pro?: ProUsage };
 
 function download(f: ExportFile) {
   const bytes = Uint8Array.from(atob(f.base64), (c) => c.charCodeAt(0));
@@ -47,7 +50,7 @@ export default function ExportSheet({
     // eslint-disable-next-line react-hooks/set-state-in-effect -- kick off export when the sheet opens
     setBusy(true);
     setRes(null);
-    fetch("/api/export", { method: "POST", body: JSON.stringify({ menu, draftId, paidSessionId }) })
+    fetch("/api/export", { method: "POST", body: JSON.stringify({ menu, draftId, paidSessionId, proSessionId: readProSession() }) })
       .then((r) => r.json())
       .then((d) => !cancelled && setRes({ issues: [], steps: [], files: [], ...d }))
       .catch(() => !cancelled && setRes({ issues: [], steps: [], files: [], error: "Couldn't build the file. Try again." }))
@@ -65,7 +68,14 @@ export default function ExportSheet({
     try {
       const r = await fetch("/api/checkout", {
         method: "POST",
-        body: JSON.stringify({ draftId, target: menu.target, restaurantName: menu.restaurantName, itemCount: menu.items.length, utm: readUtm() }),
+        body: JSON.stringify({
+          draftId,
+          target: menu.target,
+          restaurantName: menu.restaurantName,
+          itemCount: menu.items.length,
+          utm: readUtm(),
+          proSessionId: res?.pro ? readProSession() : undefined,
+        }),
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || !d.url) throw new Error(d.error || "Couldn't start checkout.");
@@ -75,6 +85,14 @@ export default function ExportSheet({
       setPaying(false);
     }
   };
+
+  const manage = async () => {
+    setPayError(null);
+    const err = await openBillingPortal();
+    if (err) setPayError(err);
+  };
+  const overLimit = !!(res?.needsPayment && res.pro);
+  const price = overLimit ? PRO.overageCents : PER_MENU.priceCents;
 
   const errors = res?.issues.filter((i) => i.level === "error") ?? [];
   const warns = res?.issues.filter((i) => i.level === "warn") ?? [];
@@ -97,11 +115,13 @@ export default function ExportSheet({
               <Lock className="size-4" /> Your file is ready to unlock
             </div>
             <div className="mt-2 flex items-end gap-2">
-              <span className="text-4xl font-semibold">{fmtUsd(PER_MENU.priceCents)}</span>
-              <span className="pb-1 text-white/70">this menu</span>
+              <span className="text-4xl font-semibold">{fmtUsd(price)}</span>
+              <span className="pb-1 text-white/70">{overLimit ? "extra build" : "this menu"}</span>
             </div>
             <p className="mt-1 text-sm text-white/70">
-              {menu.items.length} items → {info.label}. One-time. Re-download anytime.
+              {overLimit
+                ? `You've used all ${res!.pro!.limit} Pro builds this month. This one is ${fmtUsd(PRO.overageCents)}, charged to your card on file at checkout.`
+                : `${menu.items.length} items → ${info.label}. One-time. Re-download anytime.`}
             </p>
           </div>
           <ul className="space-y-2 text-sm">
@@ -114,11 +134,19 @@ export default function ExportSheet({
           {payError && <p className="rounded-2xl bg-red-50 p-3 text-sm text-red-700">{payError}</p>}
           <Button size="lg" className="w-full" onClick={checkout} disabled={paying}>
             {paying ? <Loader2 className="size-5 animate-spin" /> : null}
-            Pay {fmtUsd(PER_MENU.priceCents)} and download
+            Pay {fmtUsd(price)} and download
           </Button>
           <p className="flex items-center justify-center gap-1.5 text-xs text-muted">
-            <Tag className="size-3.5" /> Have a promo code? Enter it on the next screen. Secure checkout by Stripe.
+            <Tag className="size-3.5" /> Have a promo code? Enter it on the next screen.
           </p>
+          <p className="text-center text-xs text-muted">
+            Sold by {SITE.company}. Secure checkout by Stripe.
+          </p>
+          {overLimit && (
+            <button onClick={manage} className="block w-full text-center text-xs text-muted underline">
+              Manage billing
+            </button>
+          )}
         </div>
       )}
 
@@ -141,6 +169,17 @@ export default function ExportSheet({
             <CheckCircle2 className="size-6 shrink-0" />
             <p className="font-semibold">Ready. Download, then follow the steps below.</p>
           </div>
+          {res.pro && (
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-line px-4 py-3 text-sm">
+              <span>
+                <b>Pro</b> · {res.pro.used} of {res.pro.limit} builds used this month
+              </span>
+              <button onClick={manage} className="shrink-0 text-muted underline">
+                Manage billing
+              </button>
+            </div>
+          )}
+          {payError && !res.needsPayment && <p className="rounded-2xl bg-red-50 p-3 text-sm text-red-700">{payError}</p>}
 
           <div className="space-y-2">
             {res.files.map((f, i) => {
