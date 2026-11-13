@@ -75,7 +75,7 @@ ISO:
 - H: Menu Builds for ISOs · Board Restaurants Faster · Skip the Menu Build · Clover, Square, Toast · $49 a Menu, Pro Soon
 - D: Your install team shouldn't be typing menus. Snap it, review it, download the import file. · Merchants processing sooner. Built for ISOs, agents and POS resellers.
 
-Ad copy rules: no "official/certified/partner", no vendor logos (Search has none anyway), trademark terms in ad text may be restricted by the trademark owner. If an ad gets limited for trademark, fall back to "your POS" variants and keep the brand terms as keywords only. Sitelinks: For ISOs · Pricing · Guides · How it works.
+Ad copy rules: no "official/certified/partner", no vendor logos in ad creative (Search has none anyway; site logo use doesn't extend to ads), trademark terms in ad text may be restricted by the trademark owner. If an ad gets limited for trademark, fall back to "your POS" variants and keep the brand terms as keywords only. Sitelinks: For ISOs · Pricing · Guides · How it works.
 
 ### 2. LinkedIn ($1,500 and $3,000 tiers)
 

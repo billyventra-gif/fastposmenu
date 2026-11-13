@@ -15,7 +15,7 @@ Owner: CMO · v1 · 2026-11-12 · Window: Mon Nov 16 – Tue Dec 15, 2026
 ## Ground rules
 
 - Sample menus only (Riverbend, Daybreak Cafe, Northside Pizza). Never a real merchant's menu, never a real merchant's name.
-- Square, Clover, Toast named factually. No vendor logos in visuals. Never "partner/certified/official".
+- Square, Clover, Toast named factually. No vendor logos in social visuals unless Billy approves that separately (site use is approved; see `docs/brand/visual.md`). Never "partner/certified/official".
 - No mention of Billy's employer or any of its people, merchants or relationships. Billy's bio line for this venture: "Payments operator. Founder, Code 85 Labs."
 - Don't market DoorDash/Uber Eats/Grubhub link import.
 - Formats are beta. Don't say "imports perfectly." Say "import file", "review before you download".

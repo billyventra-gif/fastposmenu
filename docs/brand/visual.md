@@ -57,8 +57,8 @@ Don't use `font-bold`/`font-extrabold` on marketing pages. Semibold is the heavi
 - **Before/after** stays the core story: paper menu → structured rows → import file.
 - **Sample menus only** (`docs/marketing/sample-menus.md`). Never a real merchant's menu.
 - Photos: real counters, real printed menus, natural light, shot on a phone. No stock handshakes, robots or glowing brains. No illustrations.
-- **Pending decision: official POS logos.** The build session reports Billy wants official Square/Clover/Toast logos in "exports to / works with" spots, via `src/components/pos-logo.tsx` (renders plain text until logo files are added to `/public/logos/`). Until Billy confirms it directly and each company's brand/trademark guidelines are checked (some limit logo use to partners), the rule below stands and no logo files get added. If approved: official files only, never redrawn or recolored, never in a lockup with our logo, trademark disclaimer kept, and no partner/certified/official wording.
-- POS names appear as plain text on marketing pages. In the app, `PosMark` letter badges are all neutral black (no per-vendor colors). Never vendor logos or vendor brand colors used as a logo.
+- **Official POS logos (approved by Billy, 2026-11-13), "exports to / works with" use only.** Only via `src/components/pos-logo.tsx` (`PosWordmark`, `PosIcon`); plain text until files are added. Conditions: (1) official files from each company's brand/press kit, never redrawn, recolored, cropped or animated; (2) each company's trademark/brand guidelines checked first, and any that limit logo use to partners stay as plain text; (3) never in a lockup with our logo or bigger than it; (4) trademark disclaimer stays; (5) still no partner/certified/official/integrated wording. Not in ads or social creative unless Billy approves that separately.
+- Everywhere else, POS names are plain text. In the app, `PosMark` letter badges are all neutral black (no per-vendor colors). Never vendor brand colors used as our own styling, and no vendor logos outside the approved use above.
 
 ## Social and ad templates
 
