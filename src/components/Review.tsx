@@ -17,6 +17,7 @@ import {
   X,
   MessageSquareText,
   Undo2,
+  Percent,
 } from "lucide-react";
 import { formatCents } from "@/lib/menu/money";
 import { newId, type Category, type Item, type Menu, type ModifierGroup, type TaxHint } from "@/lib/menu/schema";
@@ -25,6 +26,7 @@ import { POS_INFO } from "@/lib/export/registry";
 import PriceInput from "./PriceInput";
 import ExportSheet from "./ExportSheet";
 import ChangeSheet from "./ChangeSheet";
+import PriceSheet from "./PriceSheet";
 import { BottomBar, Button, Field, PosMark, Sheet, Stat, cx, inputCls } from "./ui";
 
 type Tab = "items" | "modifiers" | "settings";
@@ -63,6 +65,7 @@ export default function Review({
   const [catId, setCatId] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [changing, setChanging] = useState(false);
+  const [pricing, setPricing] = useState(false);
   const [undo, setUndo] = useState<{ prev: Menu; summary: string } | null>(null);
   // Returning from Stripe: open the export sheet once.
   useEffect(() => {
@@ -130,17 +133,35 @@ export default function Review({
         </details>
       )}
 
-      {/* Plain-English edits */}
-      <button
-        onClick={() => setChanging(true)}
-        className="mt-5 flex w-full items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3.5 text-left transition hover:border-ink/30"
-      >
-        <MessageSquareText className="size-5 shrink-0 text-muted" />
-        <span className="min-w-0 flex-1">
-          <span className="block text-[15px] font-medium">Tell it what to change</span>
-          <span className="block truncate text-sm text-muted">&quot;Raise all prices 5%&quot;, &quot;Make Add-Ons optional, up to 3&quot;, &quot;Move drinks to the end&quot;</span>
-        </span>
-      </button>
+      {/* Quick edits: exact price controls + plain-English changes */}
+      <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <button
+          onClick={() => setPricing(true)}
+          className="flex w-full items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3.5 text-left transition hover:border-ink/30"
+        >
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-ink text-white">
+            <Percent className="size-4" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[15px] font-medium">Adjust prices</span>
+            <span className="block truncate text-sm text-muted">Increase or decrease by % or $, with rounding</span>
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted" />
+        </button>
+        <button
+          onClick={() => setChanging(true)}
+          className="flex w-full items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3.5 text-left transition hover:border-ink/30"
+        >
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-ink/5">
+            <MessageSquareText className="size-4 text-ink" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[15px] font-medium">Tell it what to change</span>
+            <span className="block truncate text-sm text-muted">&quot;Make Add-Ons optional, up to 3&quot;, &quot;Move drinks to the end&quot;</span>
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted" />
+        </button>
+      </div>
       {undo && (
         <div className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-ink px-4 py-3 text-sm text-white">
           <span className="min-w-0 truncate">Applied: {undo.summary}</span>
@@ -355,6 +376,15 @@ export default function Review({
         open={changing}
         menu={menu}
         onClose={() => setChanging(false)}
+        onApply={(next, summary) => {
+          setUndo({ prev: menu, summary });
+          onChange(next);
+        }}
+      />
+      <PriceSheet
+        open={pricing}
+        menu={menu}
+        onClose={() => setPricing(false)}
         onApply={(next, summary) => {
           setUndo({ prev: menu, summary });
           onChange(next);

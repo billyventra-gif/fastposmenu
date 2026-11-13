@@ -1,5 +1,6 @@
 "use client";
 
+import { PosIcon } from "./pos-logo";
 import { useEffect, useSyncExternalStore, type ButtonHTMLAttributes, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
@@ -119,18 +120,9 @@ export function Stat({ value, label, tone = "default" }: { value: number | strin
 }
 
 /** Neutral monogram tiles. We don't use POS vendors' logos. */
-const POS_STYLE: Record<PosTarget, string> = {
-  // Neutral on purpose: no vendor logos or vendor brand colors.
-  square: "bg-ink text-white",
-  clover: "bg-ink text-white",
-  toast: "bg-ink text-white",
-};
+/** POS icon tile: official logo when registered in pos-logo.tsx, else a neutral letter. */
 export function PosMark({ pos, className }: { pos: PosTarget; className?: string }) {
-  return (
-    <span className={cx("grid place-items-center rounded-lg font-display font-semibold uppercase", POS_STYLE[pos], className)} aria-hidden>
-      {pos[0]}
-    </span>
-  );
+  return <PosIcon pos={pos} className={className} />;
 }
 
 export function Field({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) {
