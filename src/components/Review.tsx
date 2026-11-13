@@ -15,6 +15,8 @@ import {
   Trash2,
   UtensilsCrossed,
   X,
+  MessageSquareText,
+  Undo2,
 } from "lucide-react";
 import { formatCents } from "@/lib/menu/money";
 import { newId, type Category, type Item, type Menu, type ModifierGroup, type TaxHint } from "@/lib/menu/schema";
@@ -22,6 +24,7 @@ import * as E from "@/lib/menu/edit";
 import { POS_INFO } from "@/lib/export/registry";
 import PriceInput from "./PriceInput";
 import ExportSheet from "./ExportSheet";
+import ChangeSheet from "./ChangeSheet";
 import { BottomBar, Button, Field, PosMark, Sheet, Stat, cx, inputCls } from "./ui";
 
 type Tab = "items" | "modifiers" | "settings";
@@ -59,6 +62,8 @@ export default function Review({
   const [groupId, setGroupId] = useState<string | null>(null);
   const [catId, setCatId] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
+  const [changing, setChanging] = useState(false);
+  const [undo, setUndo] = useState<{ prev: Menu; summary: string } | null>(null);
   // Returning from Stripe: open the export sheet once.
   useEffect(() => {
     if (!openExport) return;
@@ -123,6 +128,32 @@ export default function Review({
             ))}
           </ul>
         </details>
+      )}
+
+      {/* Plain-English edits */}
+      <button
+        onClick={() => setChanging(true)}
+        className="mt-5 flex w-full items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3.5 text-left transition hover:border-ink/30"
+      >
+        <MessageSquareText className="size-5 shrink-0 text-muted" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-[15px] font-medium">Tell it what to change</span>
+          <span className="block truncate text-sm text-muted">&quot;Raise all prices 5%&quot;, &quot;Make Add-Ons optional, up to 3&quot;, &quot;Move drinks to the end&quot;</span>
+        </span>
+      </button>
+      {undo && (
+        <div className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-ink px-4 py-3 text-sm text-white">
+          <span className="min-w-0 truncate">Applied: {undo.summary}</span>
+          <button
+            onClick={() => {
+              onChange(undo.prev);
+              setUndo(null);
+            }}
+            className="flex shrink-0 items-center gap-1.5 font-medium underline-offset-4 hover:underline"
+          >
+            <Undo2 className="size-4" /> Undo
+          </button>
+        </div>
       )}
 
       {/* Tabs */}
@@ -320,6 +351,15 @@ export default function Review({
       />
       <GroupSheet key={group?.id} group={group} menu={menu} onChange={onChange} onClose={() => setGroupId(null)} />
       <CategorySheet cat={cat} cats={cats} menu={menu} onChange={onChange} onClose={() => setCatId(null)} />
+      <ChangeSheet
+        open={changing}
+        menu={menu}
+        onClose={() => setChanging(false)}
+        onApply={(next, summary) => {
+          setUndo({ prev: menu, summary });
+          onChange(next);
+        }}
+      />
       <ExportSheet open={exporting} menu={menu} draftId={draftId} paidSessionId={paidSessionId} onClose={() => setExporting(false)} />
     </section>
   );

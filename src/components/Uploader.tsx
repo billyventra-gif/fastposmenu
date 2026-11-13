@@ -47,6 +47,7 @@ export default function Uploader({
   const [dragging, setDragging] = useState(false);
   const [showLink, setShowLink] = useState(false);
   const [link, setLink] = useState("");
+  const [notes, setNotes] = useState("");
   const [linkMsg, setLinkMsg] = useState<string | null>(null);
   const pick = useRef<HTMLInputElement>(null);
   const camera = useRef<HTMLInputElement>(null);
@@ -71,6 +72,7 @@ export default function Uploader({
       if (size > MAX_BODY) throw new Error("That's more than 4 MB in one go. Split the PDF or send fewer photos.");
       const fd = new FormData();
       fd.set("target", target);
+      if (notes.trim()) fd.set("notes", notes.trim());
       prepared.forEach((f) => fd.append("files", f));
       const res = await fetch("/api/extract", { method: "POST", body: fd });
       const data = await res.json().catch(() => ({}));
@@ -180,6 +182,20 @@ export default function Uploader({
       {error && <p className="mt-4 animate-rise rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">{error}</p>}
 
       <p className="mt-5 text-sm text-muted">Tip: shoot each page straight on, in good light, edge to edge.</p>
+
+      <label className="mt-6 block">
+        <span className="mb-1.5 flex items-baseline justify-between text-sm font-medium">
+          Notes for the read <span className="text-xs font-normal text-muted">Optional</span>
+        </span>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          rows={3}
+          maxLength={2000}
+          placeholder="e.g. Skip the specials board. Page 2 prices are happy hour, use page 1. Burgers come with a choice of side."
+          className={cx(inputCls, "h-auto py-3 leading-relaxed")}
+        />
+      </label>
 
       <div className="mt-8 rounded-3xl bg-surface p-4 ring-1 ring-line">
         <button onClick={() => setShowLink(!showLink)} className="flex w-full items-center gap-3 text-left">
