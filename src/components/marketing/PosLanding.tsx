@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { BookOpen, Camera, Check, FileSpreadsheet, ScanLine, Wand2 } from "lucide-react";
 import type { PosTarget } from "@/lib/menu/schema";
+import { PosWordmark } from "@/components/pos-logo";
 import { BetaNote, Card, Container, CtaBand, Faq, IconTile, MarketingShell, Pill, PrimaryCta, SecondaryCta, SectionHead } from "./site";
 import { MenuDemo, type DemoRow } from "./MenuDemo";
 
@@ -42,6 +43,10 @@ export function PosLanding(p: PosLandingProps) {
               <SecondaryCta href="/pricing">$49 a menu · Pricing</SecondaryCta>
             </div>
             <p className="mt-4 text-sm text-muted">Build and review free. Pay when you download.</p>
+            <div className="mt-8 flex items-center gap-3 border-t border-line pt-5">
+              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Exports to</span>
+              <PosWordmark pos={p.pos} className="h-6 text-[18px] text-ink/80" />
+            </div>
           </div>
           <MenuDemo title={p.demo.title} label={`${p.name} import`} rows={p.demo.rows} />
         </section>

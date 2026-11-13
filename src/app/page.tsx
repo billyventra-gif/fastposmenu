@@ -7,6 +7,7 @@ import { DEMO_TACOS, MenuDemo } from "@/components/marketing/MenuDemo";
 import { PER_MENU, PRO, fmtUsd } from "@/lib/billing/plans";
 import appReview from "../../public/product/app-review.png";
 import appPhone from "../../public/product/app-phone.png";
+import { PosWordmark } from "@/components/pos-logo";
 
 const STATS = [
   { value: "~20s", label: "to read a menu page" },
@@ -91,10 +92,10 @@ export default function Home() {
       <section className="border-b border-line bg-surface">
         <Container className="flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">Exports import files for</p>
-          <div className="flex items-center gap-8 font-display text-[20px] font-semibold tracking-[-0.02em] text-ink/70 sm:gap-12">
-            <span>Square</span>
-            <span>Clover</span>
-            <span>Toast</span>
+          <div className="flex items-center gap-8 text-[20px] text-ink/70 sm:gap-12">
+            {(["square", "clover", "toast"] as const).map((p) => (
+              <PosWordmark key={p} pos={p} className="h-6" />
+            ))}
           </div>
         </Container>
         <div className="border-t border-line">

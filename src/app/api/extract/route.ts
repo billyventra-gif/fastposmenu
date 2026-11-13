@@ -25,6 +25,7 @@ export async function POST(req: Request) {
   const target = PosTarget.safeParse(form.get("target"));
   if (!target.success) return Response.json({ error: "Pick a POS first." }, { status: 400 });
   const files = form.getAll("files").filter((f): f is File => f instanceof File);
+  const notes = typeof form.get("notes") === "string" ? (form.get("notes") as string).slice(0, 2000) : "";
   if (files.length === 0) return Response.json({ error: "Add at least one file." }, { status: 400 });
   if (files.length > 25) return Response.json({ error: "That's a lot of files. Send 25 or fewer at a time." }, { status: 400 });
 
@@ -73,7 +74,7 @@ export async function POST(req: Request) {
       jobs.push({ kind: "images", images: images.slice(i, i + MAX_IMAGES_PER_CALL), label: `photos ${i + 1}+` });
     }
 
-    const results = await Promise.all(jobs.map((j) => extractMenu(j)));
+    const results = await Promise.all(jobs.map((j) => extractMenu(j, notes)));
     const menu = normalizeExtractions(
       [...direct, ...results.map((r) => r.extraction)],
       target.data,

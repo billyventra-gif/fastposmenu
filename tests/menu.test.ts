@@ -164,3 +164,44 @@ test("extract rate limit: 8 per IP per hour, then a wait time", async () => {
   assert.equal(takeExtract("5.6.7.8", t0 + 10), 0, "other IPs unaffected");
   assert.equal(takeExtract("1.2.3.4", t0 + 60 * 60 * 1000 + 1), 0, "window resets after an hour");
 });
+
+test("edit ops: bulk price change math lives in code, with rounding", async () => {
+  const { applyOps, EditPlan } = await import("../src/lib/menu/edit-ops");
+  const m = normalizeExtractions([fixture], "clover", []);
+  const tacos = m.categories.find((c) => c.name === "Tacos")!;
+  const plan = EditPlan.parse({
+    summary: "Tacos up 10%, rounded to quarters",
+    unclear: null,
+    ops: [{ op: "adjust_prices", scope: { all: false, category_ids: [tacos.id], item_ids: [] }, mode: "percent", value: 10, round: "quarter", include_modifiers: false }],
+  });
+  const r = applyOps(m, plan.ops);
+  const street = r.menu.items.find((i) => i.name === "Street Tacos (3)")!;
+  assert.equal(street.variations[0].priceCents, 1275, "11.50 * 1.1 = 12.65 -> 12.75");
+  assert.equal(r.menu.items.find((i) => i.name.startsWith("Shrimp"))!.variations[0].priceCents, null, "market price untouched");
+  assert.equal(r.menu.items.find((i) => i.name === "Classic Burrito")!.variations[0].priceCents, 1275, "other categories untouched");
+  assert.equal(m.items.find((i) => i.name === "Street Tacos (3)")!.variations[0].priceCents, 1150, "input not mutated");
+  assert.equal(r.changes.length, 1);
+});
+
+test("edit ops: ends_99 rounding, group rules, moves, unknown IDs skipped", async () => {
+  const { applyOps } = await import("../src/lib/menu/edit-ops");
+  const m = normalizeExtractions([fixture], "clover", []);
+  const addons = m.modifierGroups.find((g) => g.name === "Add-Ons")!;
+  const drinks = m.categories.find((c) => c.name === "Drinks")!;
+  const coke = m.items.find((i) => i.name === "Mexican Coke")!;
+  const r = applyOps(m, [
+    { op: "adjust_prices", scope: { all: true, category_ids: [], item_ids: [] }, mode: "amount", value: 0.5, round: "ends_99", include_modifiers: false },
+    { op: "update_group", group_id: addons.id, name: null, min_select: 0, max_select: 3 },
+    { op: "move_items", item_ids: [coke.id], category_id: null, new_category_name: "Soft Drinks" },
+    { op: "rename_category", category_id: drinks.id, name: "Bar" },
+    { op: "set_price", item_id: "item_nope", variation_id: null, price_text: "5" },
+  ]);
+  const elote = r.menu.items.find((i) => i.name === "Elote")!;
+  assert.equal(elote.variations[0].priceCents, 599, "5.25 + .50 = 5.75 -> 5.99");
+  const g = r.menu.modifierGroups.find((x) => x.id === addons.id)!;
+  assert.deepEqual([g.minSelect, g.maxSelect], [0, 3]);
+  const soft = r.menu.categories.find((c) => c.name === "Soft Drinks")!;
+  assert.equal(r.menu.items.find((i) => i.id === coke.id)!.categoryId, soft.id);
+  assert.ok(r.menu.categories.some((c) => c.name === "Bar"));
+  assert.equal(r.skipped.length, 1, "bad item id is skipped, not crashed");
+});

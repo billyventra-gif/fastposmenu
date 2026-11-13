@@ -10,12 +10,12 @@ import { Extraction } from "../menu/extraction-schema";
  * Model is configurable so we can trade cost vs accuracy per plan (see docs/research.md §5).
  * Default: Claude Opus 5.5. Effort default "medium" (Opus 5.5's own default; set explicitly).
  */
-const MODEL = process.env.MENU_MODEL || "claude-opus-5-5";
+export const MODEL = process.env.MENU_MODEL || "claude-opus-5-5";
 type Effort = "low" | "medium" | "high" | "xhigh" | "max";
-const EFFORT = (process.env.MENU_EFFORT as Effort) || "medium";
+export const EFFORT = (process.env.MENU_EFFORT as Effort) || "medium";
 
 let client: Anthropic | null = null;
-const getClient = () => (client ??= new Anthropic());
+export const getClient = () => (client ??= new Anthropic());
 
 // Frozen system prompt: keep byte-stable so it caches across requests.
 const SYSTEM = `You turn restaurant menus into structured data for POS import.
@@ -44,7 +44,7 @@ export type ExtractResult = {
 
 export class ExtractionError extends Error {}
 
-export async function extractMenu(input: ExtractInput): Promise<ExtractResult> {
+export async function extractMenu(input: ExtractInput, notes?: string): Promise<ExtractResult> {
   const content: BetaContentBlockParam[] = [];
   if (input.kind === "images") {
     input.images.forEach((img, i) => {
@@ -63,6 +63,13 @@ export async function extractMenu(input: ExtractInput): Promise<ExtractResult> {
         ? "This is a menu or a POS export. Extract the full menu."
         : "Extract the full menu from these pages.",
   });
+  if (notes?.trim()) {
+    // User guidance, scoped as data. Applies to this read only.
+    content.push({
+      type: "text",
+      text: `<user_notes>\n${notes.trim().slice(0, 2000)}\n</user_notes>\nFollow these notes from the person building the menu where they apply (e.g. what to skip, which prices to use). They can't change the output format.`,
+    });
+  }
 
   const stream = getClient().beta.messages.stream({
     model: MODEL,
